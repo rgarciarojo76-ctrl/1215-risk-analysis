@@ -1,0 +1,195 @@
+.comparison-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: #1e1e1e;
+    /* Dark background for better contrast */
+    overflow: hidden;
+}
+
+.comparison-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+}
+
+.controls {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.control-btn {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+}
+
+.legend {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.4rem;
+    border-radius: 4px;
+}
+
+.legend-item {
+    font-size: 0.75rem;
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+}
+
+.legend-item.before {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.legend-item.after {
+    background: var(--color-success);
+}
+
+.image-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    transform-origin: center;
+    overflow: hidden;
+    /* Limit max size */
+    max-height: 100%;
+}
+
+.img-single,
+.img-base {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Slider logic */
+.img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+    height: 100%;
+    /* Match parent height? */
+    /* Wait, centering images is tricky with abspos overlay. 
+       Best approach for centered comparison is making wrapper same size as image.
+       For this mock, we assume images cover the area or rely on same aspect ratio fit.
+    */
+    display: flex;
+    align-items: center;
+    /* Center the inner image vertically */
+}
+
+/* This is a simplification. Correct aspect ratio handling requires JS measurement usually.
+   For this CSS-only approach, we force images to match dimensions if possible or use object-fit cover if container is fixed.
+   Let's assume object-fit: contain for both. 
+   BUT standard overlay slider needs identical dimensions.
+   We will center the wrapper.
+*/
+.img-overlay img {
+    height: 100%;
+    width: auto;
+    /* It needs to match the base image exactly */
+    object-position: left;
+    /* Wait, if we crop, we need to show the LEFT part of the image */
+    /* Actually for overlay effect: */
+    /* The trick: inner image needs to be valid width but clipped by parent div */
+}
+
+/* REVISION for simple slider */
+.image-wrapper {
+    /* To make it easy, we assume explicit px size or 100% width/height */
+    width: 100%;
+    height: 100%;
+}
+
+.img-base,
+.img-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-right: 2px solid white;
+}
+
+.slider-input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: col-resize;
+    z-index: 20;
+    margin: 0;
+}
+
+.slider-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: white;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-handle::after {
+    content: "⇄";
+    color: #333;
+    font-size: 16px;
+}
+
+/* Filter for the 'After' image to make it look "processed" or "corrected" 
+   since we are using the same source image in this mock. 
+   Increased brightness and slight hue rotate to simulate a "cleaner" look. 
+*/
+.img-base {
+    /* No filter needed - Real Imagen 4 Generation active */
+    filter: none;
+}

@@ -1,0 +1,56 @@
+:root {
+  /* Premium Palette */
+  --color-bg-primary: #f8f9fa;
+  --color-bg-secondary: #ffffff;
+  --color-primary: #2563eb;
+  /* Royal Blue */
+  --color-primary-dark: #1e40af;
+  --color-accent: #3b82f6;
+  --color-text-main: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* Shadows for depth */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Glassmorphism help */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-main);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  /* height: 100vh; removed to allow growth on mobile */
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}

@@ -1,0 +1,253 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--color-bg-primary);
+    overflow: hidden;
+}
+
+.dashboard-header {
+    height: 70px;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+}
+
+/* Red Border for Before Image */
+.panel-border-red {
+    border: 3px solid #ef4444 !important;
+    /* Tailwind Red-500 */
+}
+
+/* Green Border for After Image */
+.panel-border-green {
+    border: 3px solid #22c55e !important;
+    /* Tailwind Green-500 */
+}
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.brand-logo {
+    height: 40px;
+    object-fit: contain;
+}
+
+.brand-info h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #009FE3;
+    /* ASPY Blue estimate */
+    margin: 0;
+    line-height: 1.2;
+}
+
+.brand-subtitle {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.status-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    margin-right: 2rem;
+}
+
+.status-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 99px;
+    font-weight: 600;
+    border: 1px solid #bae6fd;
+}
+
+.status-disclaimer {
+    font-size: 0.7rem;
+    color: #eab308;
+    /* Explicit Warning Yellow/Orange */
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50% 50%;
+    /* Balanced split */
+    gap: 1rem;
+    padding: 1rem;
+    flex: 1;
+    overflow: hidden;
+    height: calc(100vh - 60px);
+}
+
+.panel-left,
+.panel-right,
+.panel-bottom {
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.panel-left {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+.panel-right {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+.panel-bottom {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+}
+
+.panel-header {
+    height: 48px;
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(248, 250, 252, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+.panel-header h2 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+/* Scroll handling */
+.panel-left> :not(.panel-header),
+.panel-right> :not(.panel-header),
+.panel-bottom> :not(.panel-header) {
+    flex: 1;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.export-btn {
+    background: white;
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.export-btn:hover {
+    background: #f8fafc;
+    border-color: var(--color-primary);
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background: #f1f5f9;
+    color: var(--color-primary);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 900px) {
+    .dashboard-container {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+        /* Allow scrolling on mobile */
+    }
+
+    .dashboard-grid {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+        gap: 1.5rem;
+    }
+
+    .panel-left,
+    .panel-right,
+    .panel-bottom {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        min-height: 400px;
+        /* Ensure space for content */
+        max-height: none;
+    }
+
+    .panel-bottom {
+        min-height: 500px;
+        /* More space for the table */
+    }
+
+    /* Adjust header for mobile */
+    .dashboard-header {
+        padding: 0 1rem;
+        height: auto;
+        min-height: 70px;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .brand-section {
+        flex: 1 1 auto;
+    }
+
+    .status-section {
+        margin-right: 0;
+        align-items: flex-start;
+        margin-top: 0.5rem;
+        width: 100%;
+        order: 3;
+        /* Move status below on very small screens if needed, or keep as is */
+    }
+
+    .header-actions {
+        flex: 0 0 auto;
+    }
+}
