@@ -5,7 +5,7 @@ import './index.css'
 
 // Hardcoded configuration for user convenience
 // Hardcoded configuration for user convenience
-const USER_PROVIDED_KEY = "AIzaSyBTzBgjW08QCXGhTRAP1KXyg4t4P2q4ULM";
+const USER_PROVIDED_KEY = import.meta.env.VITE_GOOGLE_API_KEY || "";
 // Always update to ensure we use the new working key
 localStorage.setItem('google_gemini_api_key', USER_PROVIDED_KEY);
 console.log("Auto-configured Google AI Key (Billed)");
