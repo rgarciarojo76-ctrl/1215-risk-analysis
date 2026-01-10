@@ -390,59 +390,6 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
     );
 };
 
-<input
-    type="file"
-    id="img_subida"
-    accept="image/png, image/jpeg"
-    onChange={handleChange}
-    className="file-input"
-/>
 
-{/* Dedicated Camera Input */ }
-<input
-    type="file"
-    id="camera_input"
-    accept="image/*"
-    capture="environment"
-    onChange={handleChange}
-    style={{ display: 'none' }}
-/>
-
-{
-    preview && (
-        <button
-            className="change-image-btn"
-            onClick={(e) => {
-                e.stopPropagation();
-                document.getElementById('img_subida').click();
-            }}
-        >
-            Cambiar imagen
-        </button>
-    )
-}
-        </div >
-
-    <button
-        id="btn_analizar"
-        className={`analyze-btn ${!preview ? 'disabled' : ''}`}
-        onClick={handleAnalyze}
-        disabled={!preview || isAnalyzeLoading}
-    >
-        {isAnalyzeLoading ? (
-            <>
-                <Loader2 className="spinner" size={18} />
-                Analizando...
-            </>
-        ) : (
-            <>
-                <Camera size={18} />
-                Analizar Imagen
-            </>
-        )}
-    </button>
-    </div >
-);
-};
 
 export default ImageUploader;
