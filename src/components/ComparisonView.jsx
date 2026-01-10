@@ -120,4 +120,3 @@ const ComparisonView = ({ beforeImage, afterImage, risks }) => {
 };
 
 export default ComparisonView;
-```
