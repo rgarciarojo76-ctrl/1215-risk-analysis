@@ -16,20 +16,17 @@ export default async function handler(req, res) {
         const { prompt, imageBase64 } = req.body;
 
         // Use Imagen 4 Ultra via Google Generative Language API
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-ultra-generate-preview-06-06:predict?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-ultra-generate-001:predict?key=${apiKey}`;
 
         const requestBody = {
             instances: [
                 {
-                    prompt: `Photorealistic industrial safety visualization, high quality, 4k: ${prompt}`,
-                    image: {
-                        bytesBase64Encoded: imageBase64
-                    }
+                    prompt: `Photorealistic industrial safety visualization, high quality, 4k: ${prompt}`
                 }
             ],
             parameters: {
                 sampleCount: 1,
-                // "editMode": "product-image" // Optional parameter for stronger adherence if supported
+                aspectRatio: "4:3" // Match roughly typical photo aspect
             }
         };
 
