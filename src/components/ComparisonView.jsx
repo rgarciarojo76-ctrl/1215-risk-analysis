@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ZoomIn, RotateCcw } from 'lucide-react';
 import './ComparisonView.css';
 
-const ComparisonView = ({ beforeImage, afterImage }) => {
+const ComparisonView = ({ beforeImage, afterImage, risks }) => {
     const [sliderValue, setSliderValue] = useState(50);
     const [zoomLevel, setZoomLevel] = useState(1);
 
@@ -71,40 +71,53 @@ const ComparisonView = ({ beforeImage, afterImage }) => {
     };
 
     return (
-                 */}
+        <div className="comparison-container">
+            <div className="controls">
+                <button title="Zoom" onClick={handleZoom} className="control-btn">
+                    <ZoomIn size={16} />
+                    {zoomLevel}x
+                </button>
+            </div>
 
-{
-    showComparison ? (
-        <>
-            <img src={afterImage} alt="Despues" className="img-base" />
             <div
-                className="img-overlay"
-                style={{ width: `${sliderValue}%` }}
+                className="image-wrapper"
+                style={{ transform: `scale(${zoomLevel})` }}
             >
-                <img src={beforeImage} alt="Antes" />
+                {showComparison ? (
+                    <>
+                        <img src={afterImage} alt="Despues" className="img-base" />
+                        <div
+                            className="img-overlay"
+                            style={{ width: `${sliderValue}%` }}
+                        >
+                            <img src={beforeImage} alt="Antes" />
+                            {renderOverlay('original')}
+                        </div>
+                        <div
+                            className="slider-line"
+                            style={{ left: `${sliderValue}%` }}
+                        >
+                            <div className="slider-handle"></div>
+                        </div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={sliderValue}
+                            onChange={handleSliderChange}
+                            className="slider-input"
+                        />
+                    </>
+                ) : (
+                    <div className="image-container">
+                        <img src={beforeImage} alt="Vista Original" className="img-single" />
+                        {renderOverlay('original')}
+                    </div>
+                )}
             </div>
-            <div
-                className="slider-line"
-                style={{ left: `${sliderValue}%` }}
-            >
-                <div className="slider-handle"></div>
-            </div>
-            <input
-                type="range"
-                min="0"
-                max="100"
-                value={sliderValue}
-                onChange={handleSliderChange}
-                className="slider-input"
-            />
-        </>
-    ) : (
-        <img src={beforeImage} alt="Vista Original" className="img-single" />
-    )
-}
-            </div >
-        </div >
+        </div>
     );
 };
 
 export default ComparisonView;
+```

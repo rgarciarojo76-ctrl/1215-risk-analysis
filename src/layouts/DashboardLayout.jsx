@@ -68,6 +68,7 @@ const DashboardLayout = () => {
                     <ImageUploader
                         setUploadedImage={setUploadedImage}
                         onAnalysisComplete={handleAnalysisComplete}
+                        risks={analysisResult}
                     />
                 </section>
 
