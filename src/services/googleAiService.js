@@ -16,14 +16,15 @@ Para cada riesgo detectado, debes proporcionar:
 8. Plazo: Tiempo estimado para subsanar (ej: Inmediato, 1 mes, 6 meses).
 9. Coste estimado: Rango de coste (ej: < 100€, 100-500€, > 500€).
 
-También debes generar un "dalle_prompt" (en inglés) que describa VISUALMENTE la escena para que una IA pueda redibujarla.
-CRITERIOS OBLIGATORIOS PARA LA GENERACIÓN (dalle_prompt):
-1. FIDELIDAD ABSOLUTA DE PERSPECTIVA: La imagen generada DEBE ENCAJAR PERFECTAMENTE sobre la original. NO cambies el ángulo, ni el "focal length", ni el encuadre.
-2. NORMATIVA SEÑALIZACIÓN: Toda señal debe cumplir estrictamente la norma UNE 23033 / ISO 7010 (España). Colores y pictogramas exactos.
-3. CAMBIOS PERMITIDOS: Solo introduce protecciones y correcciones.
-4. PROHIBICIONES: NO cambies la geometría de la sala. NO cambies la iluminación global.
-5. APARIENCIA: Debe parecer una FOTO EDITADA, no una generada de cero.
-El prompt debe empezar con "Exact replica of industrial scene..." y detallar: "Camera fixed at [x] height", "Walls at [x] angle".
+También debes generar un "dalle_prompt" (en inglés) optimizado para "Inpainting" o Edición de Imagen.
+CRITERIOS PARA EL PROMPT DE EDICIÓN (dalle_prompt):
+1. NO uses "Keep original scene identical". Eso hace que la IA no cambie nada.
+2. USA órdenes directas de inserción: "Insert a yellow safety barrier in the foreground", "Overlay a green walking path on the floor".
+3. ESTILO: "Augmented Reality safety visualization, photorealistic, seamless integration".
+4. NO describas lo que YA existe. Describe SOLO LO NUEVO que debe aparecer.
+5. Ejemplo: "Insert heavy yellow guardrails around the machine on the left. Add a blue mandatory PPE sign on the back wall. Paint green safety lines on the floor."
+Tu objetivo es FORZAR a la IA a pintar las medidas.
+IMPORTANTE: Sé agresivo con la descripción de los elementos nuevos. empezar con "Exact replica of industrial scene..." y detallar: "Camera fixed at [x] height", "Walls at [x] angle".
 IMPORTANTE: Describe la imagen como si fueras un topógrafo. La geometría es sagrada.
 IMPORTANTE: Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
 {
