@@ -67,6 +67,14 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete }) => {
                 const { generateImageWithImagen } = await import('../services/googleAiService');
                 console.log("Generating buffer image with Imagen 4...", analysisData.dalle_prompt);
 
+                // RESTORED: Base64 calculation
+                const base64Promise = new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                    reader.readAsDataURL(blob);
+                });
+                const imageBase64 = await base64Promise;
+
                 try {
                     afterImageUrl = await generateImageWithImagen(analysisData.dalle_prompt, null, imageBase64);
                     // alert("Imagen 4 generada con éxito!"); // Debug success
