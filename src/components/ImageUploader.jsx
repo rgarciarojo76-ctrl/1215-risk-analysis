@@ -49,6 +49,9 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete }) => {
         if (!preview) return;
         setIsAnalyzeLoading(true);
         try {
+            let resultRisks;
+            let afterImageUrl = preview;
+
             // ALWAYS use Server-Side API (Key is in Vercel Env Vars)
             const response = await fetch(preview);
             const blob = await response.blob();
