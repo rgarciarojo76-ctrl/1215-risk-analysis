@@ -94,6 +94,7 @@ export const generatePDFReport = async (risks, beforeImage, afterImage) => {
     // --- 3. SUMMARY TABLE ---
     // Prepare Data
     const tableData = risks.map(risk => [
+        risk.id || '', // Added ID
         risk.factor || '',
         risk.evidencia || '',
         risk.medida || '',
@@ -104,7 +105,7 @@ export const generatePDFReport = async (risks, beforeImage, afterImage) => {
 
     autoTable(doc, {
         startY: tableStartY,
-        head: [['Factor de riesgo\nidentificado', 'Evidencia visible en la imagen', 'Medida preventiva propuesta', 'Fuente preventiva\nutilizada']],
+        head: [['No.', 'Factor de riesgo\nidentificado', 'Evidencia visible en la imagen', 'Medida preventiva propuesta', 'Fuente preventiva\nutilizada']],
         body: tableData,
         theme: 'grid', // Uses simple lines
         headStyles: {
@@ -123,14 +124,16 @@ export const generatePDFReport = async (risks, beforeImage, afterImage) => {
             textColor: [60, 60, 60] // Default Gray
         },
         columnStyles: {
-            // 0: Factor (Red)
-            0: { textColor: [240, 80, 80], fontStyle: 'bold', cellWidth: 45 },
-            // 1: Evidence (Gray)
-            1: { textColor: [60, 60, 60], cellWidth: 'auto' },
-            // 2: Measure (Green)
-            2: { textColor: [40, 180, 100], cellWidth: 50 },
-            // 3: Source (Blue Tag look)
-            3: { textColor: [60, 100, 240], fontSize: 8, cellWidth: 35 }
+            // 0: No. (New ID column)
+            0: { fontStyle: 'bold', cellWidth: 10, halign: 'center' },
+            // 1: Factor (Red)
+            1: { textColor: [240, 80, 80], fontStyle: 'bold', cellWidth: 35 },
+            // 2: Evidence (Gray)
+            2: { textColor: [60, 60, 60], cellWidth: 'auto' },
+            // 3: Measure (Green)
+            3: { textColor: [40, 180, 100], cellWidth: 50 },
+            // 4: Source (Blue Tag look)
+            4: { textColor: [60, 100, 240], fontSize: 8, cellWidth: 35 }
         },
         didParseCell: (data) => {
             // Custom styling tweaks if needed per cell

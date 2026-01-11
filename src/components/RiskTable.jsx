@@ -19,6 +19,7 @@ const RiskTable = ({ risks }) => {
             <table className="risk-table">
                 <thead>
                     <tr>
+                        <th style={{ width: '50px', textAlign: 'center' }}>No.</th>
                         <th>Factor de riesgo identificado</th>
                         <th>Evidencia visible en la imagen</th>
                         <th>Medida preventiva propuesta</th>
@@ -28,6 +29,9 @@ const RiskTable = ({ risks }) => {
                 <tbody>
                     {risks.map((risk) => (
                         <tr key={risk.id}>
+                            <td style={{ textAlign: 'center', fontWeight: 'bold', color: '#64748b' }}>
+                                {risk.id}
+                            </td>
                             <td className="col-risk">
                                 <div className="risk-cell">
                                     <AlertCircle size={16} className="risk-icon" />
