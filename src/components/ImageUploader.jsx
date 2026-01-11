@@ -33,7 +33,12 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
             >
                 {risks.map((risk) => {
                     if (!risk.coordinates) return null;
-                    const [ymin, xmin, ymax, xmax] = risk.coordinates;
+                    // Ensure numeric values to avoid string concatenation issues
+                    const ymin = parseFloat(risk.coordinates[0]);
+                    const xmin = parseFloat(risk.coordinates[1]);
+                    const ymax = parseFloat(risk.coordinates[2]);
+                    const xmax = parseFloat(risk.coordinates[3]);
+
                     const width = xmax - xmin;
                     const height = ymax - ymin;
                     const cx = xmin + width / 2;
@@ -47,6 +52,7 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
 
                     return (
                         <g key={risk.id}>
+                            {/* Risk Zone Ellipse */}
                             <ellipse
                                 cx={cx}
                                 cy={cy}
@@ -56,6 +62,21 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                                 strokeWidth="8"
                                 fill="rgba(239, 68, 68, 0.1)"
                             />
+
+                            {/* Connector Line (from Label to Center of Risk) */}
+                            {/* Drawn behind the label badge */}
+                            <line
+                                x1={labelX}
+                                y1={labelY}
+                                x2={cx}
+                                y2={cy}
+                                stroke="#ef4444"
+                                strokeWidth="4"
+                                strokeDasharray="10,5"
+                                opacity="0.7"
+                            />
+
+                            {/* Label Badge */}
                             <circle cx={labelX} cy={labelY} r="40" fill="#ef4444" />
                             <text
                                 x={labelX}
