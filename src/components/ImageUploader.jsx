@@ -39,7 +39,6 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                     const cx = xmin + width / 2;
                     const cy = ymin + height / 2;
 
-                    return (
                     // Clamp label position to be within image bounds (with padding)
                     // Radius is 40, so padding should be at least 45 to keep circle inside
                     const PADDING = 45;
@@ -70,7 +69,6 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                                 {risk.id}
                             </text>
                         </g>
-                    );
                     );
                 })}
             </svg>
