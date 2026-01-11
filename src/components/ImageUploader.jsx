@@ -69,110 +69,6 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
         );
     };
 
-    // ... existing JSX ...
-
-    return (
-        <div className="uploader-container">
-            {/* Header / Actions for Overlay */}
-            {preview && risks && (
-                <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 20 }}>
-                    <button
-                        type="button"
-                        onClick={(e) => {
-                            e.stopPropagation(); // prevent file upload trigger
-                            setShowOverlay(!showOverlay);
-                        }}
-                        style={{
-                            background: 'rgba(0,0,0,0.6)',
-                            border: 'none',
-                            color: 'white',
-                            padding: '4px 8px',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            fontSize: '12px'
-                        }}
-                    >
-                        {showOverlay ? 'Ocultar Marcas' : 'Ver Marcas'}
-                    </button>
-                </div>
-            )}
-
-            <div
-                className={`drop-zone ${dragActive ? 'active' : ''} ${preview ? 'has-image' : ''}`}
-                // ... drag handlers ...
-                style={{ position: 'relative' }} // Ensure overlay positioning context
-            >
-                {preview ? (
-                    <>
-                        <img src={preview} alt="Vista previa" className="preview-image" id="img_subida_preview" />
-                        {renderOverlay()}
-                    </>
-                ) : (
-                    <div className="upload-prompt">
-                        <Upload size={48} className="upload-icon" />
-                        <p>Arrastre imagen aquí o haga clic para subir</p>
-                        <span className="file-types">JPG, PNG</span>
-
-                        <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                            <button
-                                type="button"
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    background: 'white',
-                                    color: '#2563eb',
-                                    border: '1px solid #2563eb',
-                                    padding: '8px 16px',
-                                    borderRadius: '20px',
-                                    cursor: 'pointer',
-                                    fontWeight: '500',
-                                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-                                }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    document.getElementById('img_subida').click();
-                                }}
-                            >
-                                <Upload size={18} />
-                                Subir Archivo
-                            </button>
-
-                            <button
-                                type="button"
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    background: '#2563eb',
-                                    color: 'white',
-                                    border: 'none',
-                                    padding: '8px 16px',
-                                    borderRadius: '20px',
-                                    cursor: 'pointer',
-                                    fontWeight: '500',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    document.getElementById('camera_input').click();
-                                }}
-                            >
-                                <Camera size={18} />
-                                Usar Cámara
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* ... inputs ... */}
-            </div>
-            {/* ... buttons ... */}
-        </div>
-    );
     const handleFile = (file) => {
         if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
             const url = URL.createObjectURL(file);
@@ -205,8 +101,6 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
             handleFile(e.target.files[0]);
         }
     };
-
-
 
     const handleAnalyze = async () => {
         if (!preview) return;
@@ -267,6 +161,33 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
 
     return (
         <div className="uploader-container">
+            {/* Header / Actions for Overlay */}
+            {preview && risks && (
+                <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 20 }}>
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation(); // prevent file upload trigger
+                            setShowOverlay(!showOverlay);
+                        }}
+                        style={{
+                            background: 'rgba(0,0,0,0.6)',
+                            border: 'none',
+                            color: 'white',
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            fontSize: '12px'
+                        }}
+                    >
+                        {showOverlay ? 'Ocultar Marcas' : 'Ver Marcas'}
+                    </button>
+                </div>
+            )}
+
             <div
                 className={`drop-zone ${dragActive ? 'active' : ''} ${preview ? 'has-image' : ''}`}
                 onDragEnter={handleDrag}
@@ -274,9 +195,13 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
                 onClick={() => document.getElementById('img_subida').click()}
+                style={{ position: 'relative' }} // Ensure overlay positioning context
             >
                 {preview ? (
-                    <img src={preview} alt="Vista previa" className="preview-image" id="img_subida_preview" />
+                    <>
+                        <img src={preview} alt="Vista previa" className="preview-image" id="img_subida_preview" />
+                        {renderOverlay()}
+                    </>
                 ) : (
                     <div className="upload-prompt">
                         <Upload size={48} className="upload-icon" />
@@ -284,7 +209,6 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                         <span className="file-types">JPG, PNG</span>
 
                         <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                            {/* Standard File Upload Button */}
                             <button
                                 type="button"
                                 style={{
@@ -309,7 +233,6 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                                 Subir Archivo
                             </button>
 
-                            {/* Camera Button */}
                             <button
                                 type="button"
                                 style={{
@@ -389,7 +312,5 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
         </div>
     );
 };
-
-
 
 export default ImageUploader;
