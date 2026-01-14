@@ -1,6 +1,9 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+const MAX_IMAGE_SIZE_MB = 10;
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
 export default async function handler(req, res) {
     // Enable CORS for frontend flexibility (optional but safe for Vercel)
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -23,14 +26,39 @@ export default async function handler(req, res) {
     try {
         const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
         if (!apiKey) {
-            throw new Error('Server misconfiguration: API Key not found');
+            // Log generic error to client, details to server logs
+            console.error('Server misconfiguration: API Key not found');
+            throw new Error('Internal Server Configuration Error');
         }
 
         const { systemPrompt, imageBase64, mimeType } = req.body;
 
-        if (!imageBase64) {
-            return res.status(400).json({ error: 'Missing image data' });
+        // --- SECURITY VALIDATION ---
+
+        // 1. Data Presence
+        if (!imageBase64 || !systemPrompt) {
+            return res.status(400).json({ error: 'Missing required data (image or prompt)' });
         }
+
+        // 2. MIME Type Validation
+        if (!ALLOWED_MIME_TYPES.includes(mimeType)) {
+            return res.status(400).json({ error: 'Invalid MIME type. Allowed: JPEG, PNG, WEBP' });
+        }
+
+        // 3. Payload Size Check (Approximate via Base64 length)
+        // Base64 is ~1.33x larger. 10MB limit -> ~13.3MB Base64 string
+        const sizeInBytes = (imageBase64.length * 3) / 4;
+        const sizeInMB = sizeInBytes / (1024 * 1024);
+        if (sizeInMB > MAX_IMAGE_SIZE_MB) {
+            return res.status(413).json({ error: `Image too large. Max ${MAX_IMAGE_SIZE_MB}MB allowed.` });
+        }
+
+        // 4. Input Sanitization (Basic)
+        if (typeof systemPrompt !== 'string' || systemPrompt.length > 10000) {
+            return res.status(400).json({ error: 'Invalid or too long system prompt.' });
+        }
+
+        // --- END VALIDATION ---
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
@@ -38,7 +66,7 @@ export default async function handler(req, res) {
         const imagePart = {
             inlineData: {
                 data: imageBase64,
-                mimeType: mimeType || "image/jpeg"
+                mimeType: mimeType
             }
         };
 
@@ -50,6 +78,10 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error("Backend Analyze Error:", error);
-        res.status(500).json({ error: error.message || 'Internal Server Error' });
+        // SECURITY: Do not leak stack traces to client
+        res.status(500).json({
+            error: 'Analysis Failed',
+            details: error.message // Safe to expose error.message if handled correctly, avoid error.stack
+        });
     }
 }
