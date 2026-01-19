@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings, TriangleAlert } from 'lucide-react';
+import { Settings, AlertTriangle } from 'lucide-react';
 
 const Header = ({ onOpenSettings, onExport }) => {
     return (
@@ -15,7 +15,7 @@ const Header = ({ onOpenSettings, onExport }) => {
             <div className="status-section">
                 <div className="status-badge">Estado: Piloto interno</div>
                 <div className="status-disclaimer">
-                    <TriangleAlert size={18} className="disclaimer-icon" />
+                    <AlertTriangle size={18} className="disclaimer-icon" />
                     <div className="disclaimer-content">
                         <span className="disclaimer-title">AVISO:</span>
                         <span className="disclaimer-body">Apoyo técnico (no sustitutivo del criterio profesional). La información debe ser validada.</span>
