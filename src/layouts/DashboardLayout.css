@@ -62,7 +62,6 @@
     /* Horizontal alignment for better integration */
     align-items: center;
     gap: 1rem;
-    margin-right: 2rem;
 }
 
 .status-badge {
@@ -92,7 +91,6 @@
 .disclaimer-icon {
     color: #eab308;
     flex-shrink: 0;
-    margin-top: 2px;
 }
 
 .disclaimer-content {
@@ -288,6 +286,8 @@
     .status-disclaimer {
         max-width: 100%;
         width: 100%;
+        border-radius: 8px; /* Opcional: reducir radio en móvil si ocupa todo el ancho */
+        justify-content: center; /* Opcional: centrar en móvil */
     }
 
     .header-actions {
