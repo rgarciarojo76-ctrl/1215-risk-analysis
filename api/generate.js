@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         // --- END VALIDATION ---
 
         // Use Imagen 4 Ultra via Google Generative Language API
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-fast-generate-001:predict?key=${apiKey}`;
 
         const requestBody = {
             instances: [
@@ -61,7 +61,8 @@ export default async function handler(req, res) {
             // Log full error for admin, show generic to user
             const errorData = await response.json();
             console.error('Imagen API Error:', errorData);
-            throw new Error('Image Generation Service Failed');
+            const errorMessage = errorData.error?.message || JSON.stringify(errorData);
+            throw new Error(`Imagen API Failed: ${errorMessage}`);
         }
 
         const data = await response.json();
