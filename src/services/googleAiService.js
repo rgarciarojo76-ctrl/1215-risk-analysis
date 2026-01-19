@@ -49,7 +49,7 @@ Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
       "grado_riesgo": "Trivial/Tolerable/Moderado/Importante/Intolerable",
       "plazo": "Inmediato/1 mes...",
       "coste_estimado": "€...",
-      "coordinates": [ymin, xmin, ymax, xmax] // Coordenadas 0-1000
+      "coordinates": [ymin, xmin, ymax, xmax] // Coordenadas 0-1000 (0,0=Top-Left, 1000,1000=Bottom-Right). Basado en imagen COMPLETA sin recortar.
     }
   ],
   "dalle_prompt": "El prompt detallado en INGLÉS siguiendo las reglas de reconstrucción forense arriba descritas."
