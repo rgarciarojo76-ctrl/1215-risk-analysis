@@ -1,4 +1,5 @@
 # Guía de Instalación y Ejecución
+<!-- Deployment Status: Triggered at 20:56 -->
 
 ## Prerrequisitos
 Necesitas tener **Node.js** instalado en tu Mac.
