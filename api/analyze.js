@@ -61,7 +61,7 @@ export default async function handler(req, res) {
         // --- END VALIDATION ---
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const imagePart = {
             inlineData: {
@@ -70,7 +70,27 @@ export default async function handler(req, res) {
             }
         };
 
-        const result = await model.generateContent([systemPrompt, imagePart]);
+        const MAX_RETRIES = 3;
+        let attempt = 0;
+        let result;
+
+        while (attempt < MAX_RETRIES) {
+            try {
+                result = await model.generateContent([systemPrompt, imagePart]);
+                break; // Success, exit loop
+            } catch (error) {
+                attempt++;
+                // Check for 503 (Service Unavailable) or 429 (Too Many Requests)
+                if ((error.message.includes('503') || error.message.includes('429')) && attempt < MAX_RETRIES) {
+                    const delay = Math.pow(2, attempt - 1) * 1000; // 1s, 2s, 4s
+                    console.log(`Attempt ${attempt} failed with ${error.message}. Retrying in ${delay}ms...`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                } else {
+                    throw error; // Rethrow if not a retryable error or max retries reached
+                }
+            }
+        }
+
         const response = await result.response;
         const text = response.text().replace(/```json/g, "").replace(/```/g, "").trim();
 
