@@ -13,26 +13,25 @@ FASE 1 · ANÁLISIS
 Identifica únicamente los factores de riesgo laborales OBJETIVAMENTE VISIBLES.
 Selecciona todas las medidas preventivas razonables (Técnicas, Equipos, Señalización, EPIs).
 
-FASE 2 · GENERACIÓN DE "dalle_prompt" (Reconstrucción Forense)
-Para permitir que la IA de imagen reconstruya la escena, debes describirla con precisión de topógrafo.
+FASE 2 · GENERACIÓN DE "dalle_prompt" (Descripción Visual Definitiva)
+El objetivo es generar una imagen que muestre CÓMO DEBERÍA QUEDAR la escena tras aplicar las medidas.
+Escribe un prompt en INGLÉS detallado y visual, como si describieras una fotografía ya terminada.
+
 ESTRUCTURA DEL PROMPT:
-1. "Photorealistic industrial scene overlay style."
-2. "GEOMETRY & CONTEXT": Describe PAREDES, SUELO, TECHO (Colores, texturas). Describe OBJETOS (Colores, materiales) y SU POSICIÓN EXACTA.
-3. "CAMERA": "Eye-level shot, front view", angulo exacto.
-4. "IMMUTABLE ELEMENTS": Lista de cosas que NO deben cambiar (Personas, mallas, ventanas).
-5. "SAFETY INTERVENTIONS": Describe SOLO lo que cambia por seguridad (Señales, barandillas, EPIs).
-   - "NEW: [Elemento] installed at [Posición]."
-   - "MODIFIED: [Elemento antiguo] replaced solely by [Elemento nuevo]."
-   - "MANDATORY: Safety signage MUST follow UNE 23033 / ISO 7010 standards (Green/White for emergency, Red/White for prohibition/fire, Yellow/Black for warning). NO generic text signs."
+1. "High quality photorealistic industrial photograph of..." (Describe el tipo de lugar: almacén, oficina, obra).
+2. "VISUAL CONTEXT": Describe la escena general (iluminación, colores principales, tipo de suelo/paredes) para mantener la coherencia con la imagen original.
+3. "SAFETY MEASURES APPLIED (KEY ELEMENTS)":
+   - Describe VISUALMENTE los elementos de seguridad que AHORA ESTÁN PRESENTES.
+   - NO digas "se debe instalar", di "there is a yellow guardrail installed at...".
+   - Ejemplo: "A bright yellow safety barrier is clearly visible blocking the drop-off edge."
+   - Ejemplo: "A standard green and white emergency exit sign is mounted above the door."
+   - Ejemplo: "The floor is clean and marked with yellow/black hazard tape."
+4. "ATMOSPHERE": "Professional, clean, safe working environment, 4k, sharp focus."
 
-REGLAS DE INTERVENCIÓN (Digital Twin):
-- Encuadre, perspectiva y arquitectura: INTOCABLES.
-- Personas: Mantener posición y gesto. Solo añadir EPIs.
-- Cambios: Solo protecciones colectivas, señalización normalizada, orden y limpieza.
-- Prohibido: Reinterpretar, "mejorar" estética, cambiar tipo de trabajo.
-
-OBJETIVO FINAL:
-Que la imagen generada pueda superponerse a la original y coincidir en todo salvo en las medidas preventivas.
+IMPORTANTE PARA EL PROMPT:
+- Debe funcionar tanto para editar la foto original como para generar una nueva desde cero si falla la edición.
+- Por eso, la descripción debe ser completa y autosuficiente.
+- Describe la escena FINAL SEGURA, no el proceso de cambio.
 
 FORMATO DE SALIDA (ESTRICTAMENTE JSON):
 Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
@@ -52,7 +51,7 @@ Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
       "coordinates": [ymin, xmin, ymax, xmax] // Coordenadas 0-1000 (0,0=Top-Left, 1000,1000=Bottom-Right). Basado en imagen COMPLETA sin recortar.
     }
   ],
-  "dalle_prompt": "El prompt detallado en INGLÉS siguiendo las reglas de reconstrucción forense arriba descritas."
+  "dalle_prompt": "El prompt en INGLÉS descrito arriba. Máximo 400 caracteres."
 }
 `;
 
