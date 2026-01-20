@@ -346,15 +346,16 @@
 }
 
 .analyze-btn-premium.disabled {
-    background: rgba(226, 232, 240, 0.5);
-    /* Glassy gray */
-    color: #cbd5e1;
+    background: #e2e8f0;
+    /* Solid gray */
+    color: #94a3b8;
+    /* Darker text */
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
-    border: 1px solid #e2e8f0;
-    /* Subtle border to define shape */
-    backdrop-filter: blur(4px);
+    border: 1px solid #cbd5e1;
+    /* Visible border */
+    opacity: 0.8;
 }
 
 .spinner {
