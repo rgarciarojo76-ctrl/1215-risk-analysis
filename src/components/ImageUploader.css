@@ -5,8 +5,8 @@
     gap: 1rem;
     padding: 1rem;
     background: #ffffff;
-    overflow: hidden;
-    /* Prevent scroll */
+    overflow-y: auto;
+    /* Allow scroll for small screens */
     position: relative;
     /* Anchor for absolute controls */
 }
@@ -14,8 +14,8 @@
 /* --- PREMIUM DROP ZONE --- */
 .drop-zone {
     flex: 1;
-    min-height: 200px;
-    /* Reduced from 250px */
+    min-height: 250px;
+    /* Increased back for safety */
     border: 2px dashed #cbd5e1;
     border-radius: 16px;
     display: flex;
@@ -27,6 +27,8 @@
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    padding: 2rem;
+    /* SAFETY PADDING */
 }
 
 .drop-zone:hover {
