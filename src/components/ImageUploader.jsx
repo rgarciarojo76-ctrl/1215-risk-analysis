@@ -3,11 +3,12 @@ import { Upload, Camera, Loader2 } from 'lucide-react';
 import './ImageUploader.css';
 
 // Mock function to simulate AI Analysis
-
+import { anonymizeImage } from '../utils/faceAnonymizer';
 
 const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // Accepted 'risks' prop
     const [preview, setPreview] = useState(null);
     const [isAnalyzeLoading, setIsAnalyzeLoading] = useState(false);
+    const [isAnonymizing, setIsAnonymizing] = useState(false); // New state for blurring
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [hasConsented, setHasConsented] = useState(false);
@@ -99,11 +100,28 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
         );
     };
 
-    const handleFile = (file) => {
+    const handleFile = async (file) => {
         if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-            const url = URL.createObjectURL(file);
-            setPreview(url);
-            setUploadedImage(url);
+            try {
+                // 1. Start Anonymization
+                setIsAnonymizing(true);
+
+                // 2. Process Image (Detect & Blur Faces)
+                const { url, count } = await anonymizeImage(file);
+
+                if (count > 0) {
+                    console.log(`Privacy Enforced: ${count} faces blurred.`);
+                }
+
+                // 3. Update Preview with SAFE image
+                setPreview(url);
+                setUploadedImage(url); // Parent component gets the BLURRED image
+            } catch (err) {
+                console.error("Anonymization failed:", err);
+                alert("Error al anonimizar la imagen. Por seguridad, no se ha subido.");
+            } finally {
+                setIsAnonymizing(false);
+            }
         }
     };
 
@@ -234,7 +252,21 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                             alt="Vista previa"
                             className="preview-image"
                             id="img_subida_preview"
+                            style={isAnonymizing ? { filter: 'blur(10px)', transition: 'filter 0.3s' } : {}}
                         />
+                        {isAnonymizing && (
+                            <div style={{
+                                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                                background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(4px)', zIndex: 30
+                            }}>
+                                <Loader2 className="spinner" size={48} color="#2563eb" />
+                                <span style={{ marginTop: '1rem', fontWeight: '600', color: '#1e293b' }}>
+                                    Anonimizando Rostros...
+                                </span>
+                                <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Privacy by Design</span>
+                            </div>
+                        )}
                         {renderOverlay()}
                     </div>
                 ) : (
