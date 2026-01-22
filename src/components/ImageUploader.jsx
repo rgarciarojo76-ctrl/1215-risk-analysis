@@ -10,7 +10,7 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
     const [isAnalyzeLoading, setIsAnalyzeLoading] = useState(false);
 
     useEffect(() => {
-        console.log("Risk Analysis UI v1.1.1 (Force Edits) Loaded");
+        console.log("Risk Analysis UI v1.1.2 (Debug Mode) Loaded");
     }, []);
     const [isAnonymizing, setIsAnonymizing] = useState(false); // New state for blurring
     const [loading, setLoading] = useState(false);
@@ -189,8 +189,8 @@ const ImageUploader = ({ setUploadedImage, onAnalysisComplete, risks }) => { // 
                     // alert("Imagen 4 generada con éxito!"); // Debug success
                 } catch (genError) {
                     console.error("Imagen generation failed:", genError);
-                    alert("Error Generando Imagen: " + genError.message);
-                    afterImageUrl = preview;
+                    alert("ERROR CRÍTICO IA (Generación): " + genError.message + ". Se mostrará la imagen original como respaldo.");
+                    afterImageUrl = preview; // Fallback only after alert
                 }
             } else {
                 console.warn("No dalle_prompt found in analysis data");

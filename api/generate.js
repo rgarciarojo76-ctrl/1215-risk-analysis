@@ -44,8 +44,8 @@ export default async function handler(req, res) {
                 }
             ],
             parameters: {
-                sampleCount: 1,
-                aspectRatio: "4:3"
+                sampleCount: 1
+                // aspectRatio: "4:3" // REMOVED: In Image-to-Image, the input image sets the AR. Forcing this causes errors.
             }
         };
 
