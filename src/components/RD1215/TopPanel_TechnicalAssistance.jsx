@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookOpen, ExternalLink, Info } from 'lucide-react';
-import CorporateCard from '../../layout/CorporateCard';
+import CorporateCard from '../layout/CorporateCard';
 
 const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
     return (

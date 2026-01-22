@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertTriangle, CheckCircle, Trash2, ClipboardList } from 'lucide-react';
-import CorporateCard from '../../layout/CorporateCard';
+import CorporateCard from '../layout/CorporateCard';
 
 const FindingsPanel_Table = ({ findings, setFindings, markers, setMarkers, currentPointId }) => {
 

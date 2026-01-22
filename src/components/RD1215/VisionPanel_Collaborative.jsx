@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Camera, RefreshCw, X, UploadCloud, Eye } from 'lucide-react';
-import CorporateCard from '../../layout/CorporateCard';
+import CorporateCard from '../layout/CorporateCard';
 
 const VisionPanel_Collaborative = ({
     currentPoint,
