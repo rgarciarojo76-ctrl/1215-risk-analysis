@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Camera, RefreshCw, X } from 'lucide-react';
-import { googleAiService } from '../../services/googleAiService';
+import React, { useRef, useState } from 'react';
+import { Camera, RefreshCw, X, UploadCloud, Eye } from 'lucide-react';
+import CorporateCard from '../../layout/CorporateCard';
 
 const VisionPanel_Collaborative = ({
     currentPoint,
@@ -12,7 +12,6 @@ const VisionPanel_Collaborative = ({
     setImages
 }) => {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const imageContainerRef = useRef(null);
 
     // Get image from global state
     const image = images[currentPointId];
@@ -47,23 +46,20 @@ const VisionPanel_Collaborative = ({
 
         const newMarker = { id: newId, x, y };
 
-        // Update Markers
         setMarkers(prev => ({
             ...prev,
             [currentPointId]: [...(prev[currentPointId] || []), newMarker]
         }));
-
-        // Add blank finding
         onAddFinding(newId);
     };
+
+    const currentMarkers = markers[currentPointId] || [];
 
     const handleAIAnalysis = async () => {
         if (!image) return;
         setIsAnalyzing(true);
         try {
-            // Mocking AI delay
             setTimeout(() => {
-                // Mock logic
                 if ((markers[currentPointId] || []).length === 0) {
                     const mockMarker = { id: 1, x: 50, y: 50 };
                     setMarkers(prev => ({ ...prev, [currentPointId]: [mockMarker] }));
@@ -76,87 +72,76 @@ const VisionPanel_Collaborative = ({
         } finally {
             setIsAnalyzing(false);
         }
-    };
-
-    const currentMarkers = markers[currentPointId] || [];
+    }
 
     return (
-        <div className="bg-gray-900 rounded-xl shadow-lg overflow-hidden h-full flex flex-col relative group">
-            {/* Header / Controls */}
-            <div className="absolute top-4 left-4 right-4 flex justify-between z-20 pointer-events-none">
-                <div className="pointer-events-auto">
-                    {!image ? (
-                        <label className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg cursor-pointer shadow-lg flex items-center gap-2 transition-all">
-                            <Camera className="w-4 h-4" />
-                            <span className="text-sm font-medium">Subir Foto</span>
-                            <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-                        </label>
-                    ) : (
-                        <button
-                            onClick={clearImage}
-                            className="bg-black/50 hover:bg-red-600/80 text-white p-2 rounded-lg backdrop-blur-sm transition-all"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                    )}
-                </div>
+        <CorporateCard
+            title="Captura del Entorno / Equipo (Peligro)"
+            icon={Eye}
+            borderColor="border-t-4 border-t-red-500"
+            className="group"
+        >
+            <div className="relative w-full h-full flex items-center justify-center bg-gray-50/50 rounded-lg border-2 border-dashed border-gray-200 hover:border-blue-200 transition-colors overflow-hidden">
 
-                <div className="pointer-events-auto">
-                    {image && (
-                        <button
-                            onClick={handleAIAnalysis}
-                            disabled={isAnalyzing}
-                            className={`px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transition-all ${isAnalyzing ? 'bg-indigo-600/50 cursor-wait' : 'bg-indigo-600 hover:bg-indigo-500 text-white'
-                                }`}
-                        >
-                            <RefreshCw className={`w-4 h-4 ${isAnalyzing ? 'animate-spin' : ''}`} />
-                            <span className="text-sm font-medium">
-                                {isAnalyzing ? 'Analizando...' : 'Auto-Análisis IA'}
-                            </span>
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            {/* Canvas Area */}
-            <div className="flex-1 bg-black flex items-center justify-center relative select-none">
+                {/* Upload State */}
                 {!image ? (
-                    <div className="text-gray-500 flex flex-col items-center gap-3">
-                        <Camera className="w-12 h-12 opacity-50" />
-                        <p className="text-sm">Sube una foto para comenzar a inspeccionar</p>
-                    </div>
+                    <label className="flex flex-col items-center justify-center cursor-pointer p-8 w-full h-full text-center">
+                        <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-4 text-blue-500 shadow-sm">
+                            <UploadCloud className="w-7 h-7" />
+                        </div>
+                        <span className="text-gray-700 font-bold mb-1">Subir Imagen del Entorno</span>
+                        <span className="text-gray-400 text-xs mb-6">Arrastra tu archivo aquí o selecciona una opción</span>
+
+                        <div className="flex gap-3">
+                            <div className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-600 shadow-sm hover:bg-gray-50 flex items-center gap-2">
+                                <UploadCloud className="w-3 h-3" />
+                                Seleccionar Archivo
+                            </div>
+                        </div>
+                        <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                    </label>
                 ) : (
-                    <div className="relative w-full h-full">
+                    // Image View State
+                    <div className="relative w-full h-full bg-black/5">
                         <img
                             src={image}
-                            alt="Analysis Target"
+                            alt="Target"
                             className="w-full h-full object-contain cursor-crosshair"
                             onClick={handleCanvasClick}
                         />
 
-                        {/* Markers Layer */}
-                        <div className="absolute inset-0 pointer-events-none">
-                            {currentMarkers.map((m, idx) => (
-                                <div
-                                    key={m.id}
-                                    className="absolute w-8 h-8 -ml-4 -mt-4 border-2 border-white bg-red-500/80 text-white rounded-full flex items-center justify-center font-bold shadow-lg animate-in zoom-in duration-300"
-                                    style={{ left: `${m.x}%`, top: `${m.y}%` }}
-                                >
-                                    {m.id}
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Intro Guidance */}
-                        {currentMarkers.length === 0 && (
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs pointer-events-none">
-                                Haz click en la imagen para marcar puntos de riesgo
+                        {/* Markers */}
+                        {currentMarkers.map((m) => (
+                            <div
+                                key={m.id}
+                                className="absolute w-6 h-6 -ml-3 -mt-3 border-2 border-white bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-md animate-in zoom-in"
+                                style={{ left: `${m.x}%`, top: `${m.y}%` }}
+                            >
+                                {m.id}
                             </div>
-                        )}
+                        ))}
+
+                        {/* Actions Overlay */}
+                        <div className="absolute top-2 right-2 flex gap-2">
+                            <button
+                                onClick={handleAIAnalysis}
+                                disabled={isAnalyzing}
+                                className="bg-white/90 text-indigo-600 p-1.5 rounded-lg shadow-sm hover:bg-white"
+                            >
+                                <RefreshCw className={`w-4 h-4 ${isAnalyzing ? 'animate-spin' : ''}`} />
+                            </button>
+
+                            <button
+                                onClick={clearImage}
+                                className="bg-white/90 text-gray-600 p-1.5 rounded-lg shadow-sm hover:text-red-500 hover:bg-white"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>
-        </div>
+        </CorporateCard>
     );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { AlertTriangle, CheckCircle, Trash2 } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Trash2, ClipboardList } from 'lucide-react';
+import CorporateCard from '../../layout/CorporateCard';
 
 const FindingsPanel_Table = ({ findings, setFindings, markers, setMarkers, currentPointId }) => {
 
@@ -31,73 +32,69 @@ const FindingsPanel_Table = ({ findings, setFindings, markers, setMarkers, curre
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-full flex flex-col p-4">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-gray-800 flex items-center gap-2">
-                    <AlertTriangle className="w-5 h-5 text-orange-500" />
-                    Tabla de Deficiencias y Medidas
-                </h3>
-                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    {currentFindings.length} Items detectados
-                </span>
-            </div>
-
-            <div className="flex-1 overflow-auto custom-scrollbar rounded-lg border border-gray-200">
-                <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50 text-gray-600 sticky top-0 z-10">
-                        <tr>
-                            <th className="px-3 py-3 w-12 text-center border-b">ID</th>
-                            <th className="px-3 py-3 border-b">Evidencia Visible (Deficiencia)</th>
-                            <th className="px-3 py-3 border-b">Medida Correctiva Propuesta</th>
-                            <th className="px-3 py-3 w-10 border-b"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {currentFindings.length === 0 ? (
-                            <tr>
-                                <td colSpan="4" className="text-center py-8 text-gray-400 italic">
-                                    No se han detectado deficiencias. Haz clic en la imagen para añadir un marcador.
-                                </td>
-                            </tr>
-                        ) : (
-                            currentFindings.map((finding) => (
-                                <tr key={finding.markerId} className="hover:bg-blue-50/30 transition-colors group">
-                                    <td className="px-3 py-3 text-center font-bold text-red-600 border-r border-dashed border-gray-200">
-                                        {finding.markerId}
-                                    </td>
-                                    <td className="px-2 py-2">
-                                        <textarea
-                                            className="w-full p-2 text-gray-700 bg-transparent rounded focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none resize-none text-xs"
-                                            rows="2"
-                                            placeholder="Describa el problema..."
-                                            value={finding.evidence}
-                                            onChange={(e) => handleUpdateFinding(finding.markerId, 'evidence', e.target.value)}
-                                        />
-                                    </td>
-                                    <td className="px-2 py-2">
-                                        <textarea
-                                            className="w-full p-2 text-gray-700 bg-transparent rounded focus:bg-white focus:ring-1 focus:ring-green-400 outline-none resize-none text-xs"
-                                            rows="2"
-                                            placeholder="Propuesta de solución..."
-                                            value={finding.measure}
-                                            onChange={(e) => handleUpdateFinding(finding.markerId, 'measure', e.target.value)}
-                                        />
-                                    </td>
-                                    <td className="px-2 py-2 text-center">
-                                        <button
-                                            onClick={() => handleDelete(finding.markerId)}
-                                            className="p-1.5 text-gray-400 hover:text-red-500 rounded hover:bg-red-50 transition-colors"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
-                                    </td>
+        <CorporateCard
+            title="Factores de Riesgo Identificados (Lista)"
+            icon={ClipboardList}
+            borderColor="border-t-4 border-t-amber-500"
+        >
+            <div className="h-full overflow-hidden flex flex-col">
+                {currentFindings.length === 0 ? (
+                    <div className="flex-1 flex flex-col items-center justify-center text-gray-300 gap-4">
+                        <ClipboardList className="w-12 h-12 opacity-50" />
+                        <p className="text-sm font-medium">No se han registrado hallazgos</p>
+                        <p className="text-xs max-w-xs text-center">Marca puntos en la imagen para añadir observaciones</p>
+                    </div>
+                ) : (
+                    <div className="overflow-auto custom-scrollbar flex-1 -mx-4 px-4 pb-4">
+                        <table className="w-full text-sm text-left border-separate border-spacing-y-2">
+                            <thead>
+                                <tr className="text-xs text-gray-400 font-semibold uppercase tracking-wider">
+                                    <th className="px-2 pb-2">REF</th>
+                                    <th className="px-2 pb-2">Evidencia (Deficiencia)</th>
+                                    <th className="px-2 pb-2">Medida Correctiva</th>
+                                    <th className="w-8"></th>
                                 </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody className="space-y-2">
+                                {currentFindings.map((finding) => (
+                                    <tr key={finding.markerId} className="bg-gray-50/50 hover:bg-blue-50/30 transition-colors rounded-lg group text-xs shadow-sm shadow-black/5">
+                                        <td className="px-3 py-3 font-bold text-red-500 w-12 text-center bg-white rounded-l-lg border-y border-l border-gray-100">
+                                            {finding.markerId}
+                                        </td>
+                                        <td className="px-2 py-2 bg-white border-y border-gray-100">
+                                            <textarea
+                                                className="w-full p-2 text-gray-600 bg-gray-50 rounded border-transparent focus:bg-white focus:border-blue-300 focus:ring-2 focus:ring-blue-100 outline-none resize-none transition-all placeholder-gray-300"
+                                                rows="2"
+                                                placeholder="Describa la deficiencia..."
+                                                value={finding.evidence}
+                                                onChange={(e) => handleUpdateFinding(finding.markerId, 'evidence', e.target.value)}
+                                            />
+                                        </td>
+                                        <td className="px-2 py-2 bg-white border-y border-gray-100">
+                                            <textarea
+                                                className="w-full p-2 text-gray-600 bg-gray-50 rounded border-transparent focus:bg-white focus:border-green-300 focus:ring-2 focus:ring-green-100 outline-none resize-none transition-all placeholder-gray-300"
+                                                rows="2"
+                                                placeholder="Propuesta de medida..."
+                                                value={finding.measure}
+                                                onChange={(e) => handleUpdateFinding(finding.markerId, 'measure', e.target.value)}
+                                            />
+                                        </td>
+                                        <td className="px-2 py-2 text-center bg-white rounded-r-lg border-y border-r border-gray-100">
+                                            <button
+                                                onClick={() => handleDelete(finding.markerId)}
+                                                className="p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
-        </div>
+        </CorporateCard>
     );
 };
 
