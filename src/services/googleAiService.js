@@ -16,23 +16,23 @@ Selecciona todas las medidas preventivas razonables (Técnicas, Equipos, Señali
 FASE 2 · GENERACIÓN DE "dalle_prompt" (Descripción Visual Definitiva / DIGITAL TWIN)
 El objetivo es editar la imagen original para integrar las medidas, manteniendo la escena REAL (Digital Twin).
 
-Escribe un prompt en INGLÉS extremadamente preciso para un modelo Image-to-Image.
+Escribe un prompt en INGLÉS para un modelo Image-to-Image.
 DEBE EMPEZAR SIEMPRE ASÍ:
-"Photorealistic edit of the provided image. Maintain exact perspective, lighting, and original structure of the room/environment. INTEGRATE the following safety measures naturally:"
+"Photorealistic editing. EDIT the image to INSTALL safety measures while keeping the original room structure. CHANGE the following:"
 
 ESTRUCTURA OBLIGATORIA DEL PROMPT:
-1.  **Base Preservation**: "Keep the red doors, walls, and floor exactly as they are. Do not hallucinate new furniture. Keep the same camera angle." (Adapta esto a lo que veas en la foto: si hay puertas rojas, di que se mantengan).
-2.  **Safety Integration**: Describe CÓMO se ven las medidas ya instaladas.
-    -   NO: "Add a sign".
-    -   SÍ: "A green emergency exit sign is mounted above the door frame."
-    -   NO: "Clean the floor".
-    -   SÍ: "The floor is clear of obstacles, with visible black and yellow safety tape marking the walkway."
-3.  **Details**: "High fidelity, 8k, seamless blending, industrial safety standards."
+1.  **Scene Anchor**: "Background: Keep existing red doors and walls. Do NOT change camera angle."
+2.  **Required Edits (FORCEFUL)**:
+    -   "INSTALL a visible green exit sign above the door."
+    -   "PLACE a yellow safety barrier in front of..."
+    -   "APPLY yellow and black hazard tape on the floor."
+    -   "REMOVE obstacles from the floor."
+3.  **Output Quality**: "The final image MUST show these safety additions clearly. 8k resolution, industrial standard."
 
 IMPORTANTE:
-- Tu prioridad es que el "dalle_prompt" obligue a la IA a respetar la foto fuente.
-- Si la foto tiene puertas rojas, menciónalas explícitamente en el prompt para "lockear" su apariencia.
-- Longitud máxima recomendada: 400-500 caracteres para asegurar que entra todo.
+- Usa verbos de ACCIÓN: "INSTALL", "ADD", "PLACE", "MOUNT".
+- Sé explícito con los colores (Yellow guardrail, Green sign).
+- El prompt debe describir la escena MODIFICADA, no la original.
 
 FORMATO DE SALIDA (ESTRICTAMENTE JSON):
 Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
