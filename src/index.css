@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Premium Palette */
   --color-bg-primary: #f8f9fa;
