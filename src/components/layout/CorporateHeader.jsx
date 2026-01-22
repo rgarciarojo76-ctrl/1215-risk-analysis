@@ -15,12 +15,12 @@ const CorporateHeader = ({ appName }) => {
                     />
                     {/* Divider and App Name */}
                     <div className="w-px h-8 bg-gray-300 mx-6"></div>
-                    <div className="flex flex-col">
-                        <span className="text-[#0ea5e9] font-bold text-lg leading-none">
-                            RD 1215/1997
+                    <div className="flex flex-col justify-center">
+                        <span className="text-[#0ea5e9] font-bold text-lg leading-tight">
+                            DIRECCIÓN TÉCNICA IA LAB
                         </span>
                         <span className="text-gray-400 text-xs font-medium tracking-wide">
-                            SISTEMA EXPERTO
+                            App: Adecuación 1215 | Equipo Fijo
                         </span>
                     </div>
                 </div>
