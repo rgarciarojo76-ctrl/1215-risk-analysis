@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import DashboardLayout from './layouts/DashboardLayout'
+import WizardContainer from './components/RD1215/WizardContainer'
 import './App.css'
 
 import Gatekeeper from './components/Gatekeeper';
@@ -7,7 +7,7 @@ import Gatekeeper from './components/Gatekeeper';
 function App() {
     return (
         <Gatekeeper>
-            <DashboardLayout />
+            <WizardContainer />
         </Gatekeeper>
     )
 }
