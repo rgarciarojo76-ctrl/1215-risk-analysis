@@ -80,7 +80,7 @@ const Phase0_Identification = ({ onStart }) => {
 
                         <button
                             type="submit"
-                            className="w-full mt-4 bg-white border-2 border-[#0ea5e9] text-[#0ea5e9] hover:bg-[#0ea5e9] hover:text-white font-bold py-3.5 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm text-sm uppercase tracking-wide"
+                            className="w-full mt-4 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold py-3.5 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm text-sm uppercase tracking-wide"
                         >
                             Comenzar Análisis
                         </button>
