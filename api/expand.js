@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         const { prompt } = req.body;
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
