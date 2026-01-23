@@ -79,41 +79,62 @@ const ExpertBotPanel = ({ currentPoint }) => {
         >
             <div className="flex flex-col h-full overflow-hidden">
                 {/* Chat Area */}
-                <div className="flex-1 overflow-y-auto pr-2 space-y-4 p-2 bg-gray-50 rounded-md border border-gray-100 mb-2">
-                    {conversation.map((msg, idx) => (
-                        <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            {msg.role === 'model' && (
+                <div className="flex-1 overflow-y-auto pr-2 space-y-4 p-2 bg-gray-50 rounded-md border border-gray-100 mb-2 flex flex-col">
+                    <div className="flex-1 space-y-4">
+                        {conversation.map((msg, idx) => (
+                            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                {msg.role === 'model' && (
+                                    <div className="p-1 mr-2 bg-indigo-100 rounded-full h-8 w-8 flex items-center justify-center flex-none">
+                                        <Bot size={16} className="text-indigo-700" />
+                                    </div>
+                                )}
+                                <div
+                                    className={`max-w-[85%] rounded-lg p-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user'
+                                        ? 'bg-indigo-600 text-white rounded-br-none'
+                                        : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none'
+                                        }`}
+                                >
+                                    <div className="whitespace-pre-wrap">
+                                        {renderContent(msg.content)}
+                                    </div>
+                                </div>
+                                {msg.role === 'user' && (
+                                    <div className="p-1 ml-2 bg-gray-200 rounded-full h-8 w-8 flex items-center justify-center flex-none">
+                                        <User size={16} className="text-gray-600" />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                        {isLoading && (
+                            <div className="flex justify-start">
                                 <div className="p-1 mr-2 bg-indigo-100 rounded-full h-8 w-8 flex items-center justify-center flex-none">
                                     <Bot size={16} className="text-indigo-700" />
                                 </div>
-                            )}
-                            <div
-                                className={`max-w-[85%] rounded-lg p-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user'
-                                        ? 'bg-indigo-600 text-white rounded-br-none'
-                                        : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none'
-                                    }`}
-                            >
-                                <div className="whitespace-pre-wrap">
-                                    {renderContent(msg.content)}
+                                <div className="bg-white border border-gray-200 p-3 rounded-lg rounded-bl-none shadow-sm">
+                                    <span className="animate-pulse text-gray-500 text-xs">Escribiendo...</span>
                                 </div>
                             </div>
-                            {msg.role === 'user' && (
-                                <div className="p-1 ml-2 bg-gray-200 rounded-full h-8 w-8 flex items-center justify-center flex-none">
-                                    <User size={16} className="text-gray-600" />
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                    {isLoading && (
-                        <div className="flex justify-start">
-                            <div className="p-1 mr-2 bg-indigo-100 rounded-full h-8 w-8 flex items-center justify-center flex-none">
-                                <Bot size={16} className="text-indigo-700" />
-                            </div>
-                            <div className="bg-white border border-gray-200 p-3 rounded-lg rounded-bl-none shadow-sm">
-                                <span className="animate-pulse text-gray-500 text-xs">Escribiendo...</span>
+                        )}
+                    </div>
+
+                    {/* Suggestions Chips (Fill Empty Space initially) */}
+                    {conversation.length === 1 && !isLoading && (
+                        <div className="mt-auto pt-4 pb-2 px-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2 text-center">Consultas Sugeridas</p>
+                            <div className="flex flex-wrap gap-2 justify-center">
+                                {['¿Cuáles son los riesgos principales?', '¿Qué medida preventiva recomiendas?', '¿Cómo verifico esto visualmente?', 'Referencia Legal'].map((suggestion, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setInput(suggestion)}
+                                        className="text-xs bg-white border border-indigo-100 text-indigo-600 px-3 py-1.5 rounded-full hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
+                                    >
+                                        {suggestion}
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     )}
+
                     <div ref={messagesEndRef} />
                 </div>
 
