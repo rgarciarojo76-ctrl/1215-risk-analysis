@@ -161,6 +161,16 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                             <XCircle className="w-3.5 h-3.5" />
                             NO CUMPLE
                         </button>
+                        <button
+                            onClick={() => toggleCompliance('not_applicable')}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${complianceStatus[currentPoint.id] === 'not_applicable'
+                                ? 'bg-gray-500 text-white shadow-sm'
+                                : 'text-gray-500 hover:text-gray-900'
+                                }`}
+                        >
+                            <span className="text-lg leading-none mb-0.5">Ø</span>
+                            NO APLICA
+                        </button>
                     </div>
 
                     <div className="h-6 w-px bg-gray-200"></div>
