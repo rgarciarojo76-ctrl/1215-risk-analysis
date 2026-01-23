@@ -136,7 +136,7 @@ const ExpertBotPanel = ({ currentPoint }) => {
                                     <button
                                         key={idx}
                                         onClick={() => setInput(suggestion)}
-                                        className="text-xs bg-white border border-indigo-100 text-indigo-600 px-3 py-1.5 rounded-full hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
+                                        className="text-sm bg-white border border-indigo-100 text-indigo-600 px-3 py-1.5 rounded-full hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
                                     >
                                         {suggestion}
                                     </button>

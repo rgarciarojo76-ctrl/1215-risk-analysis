@@ -125,7 +125,7 @@ const VisionPanel_Collaborative = ({
                             <UploadCloud className="w-7 h-7" />
                         </div>
                         <span className="text-gray-700 font-bold mb-1">Subir Imagen del Entorno</span>
-                        <span className="text-gray-400 text-xs mb-6">Arrastra tu archivo aquí o selecciona una opción</span>
+                        <span className="text-gray-400 text-sm mb-6">Arrastra tu archivo aquí o selecciona una opción</span>
 
                         <div className="flex gap-3">
                             <div className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-600 shadow-sm hover:bg-gray-50 flex items-center gap-2">

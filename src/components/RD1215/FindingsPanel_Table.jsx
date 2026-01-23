@@ -48,7 +48,7 @@ const FindingsPanel_Table = ({ findings, setFindings, markers, setMarkers, curre
                     <div className="overflow-auto custom-scrollbar flex-1 -mx-4 px-4 pb-4">
                         <table className="w-full text-sm text-left border-separate border-spacing-y-2">
                             <thead>
-                                <tr className="text-xs text-gray-400 font-semibold uppercase tracking-wider">
+                                <tr className="text-sm text-gray-400 font-semibold uppercase tracking-wider">
                                     <th className="px-2 pb-2">REF</th>
                                     <th className="px-2 pb-2">Evidencia (Deficiencia)</th>
                                     <th className="px-2 pb-2">Medida Correctiva</th>
@@ -57,7 +57,7 @@ const FindingsPanel_Table = ({ findings, setFindings, markers, setMarkers, curre
                             </thead>
                             <tbody className="space-y-2">
                                 {currentFindings.map((finding) => (
-                                    <tr key={finding.markerId} className="bg-gray-50/50 hover:bg-blue-50/30 transition-colors rounded-lg group text-xs shadow-sm shadow-black/5">
+                                    <tr key={finding.markerId} className="bg-gray-50/50 hover:bg-blue-50/30 transition-colors rounded-lg group text-sm shadow-sm shadow-black/5">
                                         <td className="px-3 py-3 font-bold text-red-500 w-12 text-center bg-white rounded-l-lg border-y border-l border-gray-100">
                                             {finding.markerId}
                                         </td>

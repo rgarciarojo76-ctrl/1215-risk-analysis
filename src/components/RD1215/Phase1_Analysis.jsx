@@ -175,14 +175,14 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
             <div className="flex-1 p-4 grid grid-cols-12 grid-rows-12 gap-4 h-[calc(100vh-4.25rem)] overflow-hidden">
 
                 {/* AREA 1: INFORMATION (Top 2/3 approx -> 8/12 rows) */}
-                <div className="col-span-12 row-span-8 min-h-0">
+                <div className="col-span-12 row-span-7 min-h-0">
                     <TopPanel_TechnicalAssistance currentPoint={currentPoint} />
                 </div>
 
                 {/* AREA 2: UTILITIES (Bottom 1/3 approx -> 4/12 rows) */}
 
                 {/* Utility A: Vision (Left) */}
-                <div className="col-span-4 row-span-4 min-h-0">
+                <div className="col-span-4 row-span-5 min-h-0">
                     <VisionPanel_Collaborative
                         currentPoint={currentPoint}
                         currentPointId={currentPoint.id}
@@ -195,7 +195,7 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                 </div>
 
                 {/* Utility B: Findings List (Right) - Now takes full 4 rows height */}
-                <div className="col-span-8 row-span-4 min-h-0">
+                <div className="col-span-8 row-span-5 min-h-0">
                     <FindingsPanel_Table
                         currentPointId={currentPoint.id}
                         findings={findings}
