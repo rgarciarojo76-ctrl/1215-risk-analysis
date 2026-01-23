@@ -161,8 +161,16 @@ export const sendChatToGemini = async (message, context, history) => {
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Backend Chat Failed');
+            let errorMsg = 'Backend Chat Failed';
+            try {
+                const error = await response.json();
+                errorMsg = error.error || errorMsg;
+            } catch (e) {
+                // Should be text if json parsing failed
+                const text = await response.text();
+                errorMsg = `Server Error (${response.status}): ${text.substring(0, 100)}`; // Truncate html
+            }
+            throw new Error(errorMsg);
         }
 
         const data = await response.json();
