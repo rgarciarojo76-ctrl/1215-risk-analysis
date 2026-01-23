@@ -9,76 +9,90 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
             icon={BookOpen}
             borderColor="border-t-4 border-t-[#0ea5e9]" // Corporate Blue
         >
-            <div className="h-full overflow-y-auto pr-2 custom-scrollbar space-y-4">
+            <div className="h-full flex flex-col gap-3 overflow-hidden">
 
-                {/* Header Badges */}
-                <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded border border-blue-100 uppercase tracking-wider">
-                        RD 1215/97 - Anexo I
-                    </span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-100 uppercase tracking-wider">
-                        Criterios Foment
-                    </span>
-                </div>
-
-                {/* Legal Text (Accordion style or Box) */}
-                <div className="bg-slate-50 border-l-4 border-slate-400 p-3 rounded-r-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                        <Gavel className="w-4 h-4 text-slate-500" />
-                        <h4 className="text-xs font-bold text-slate-700 uppercase">Texto Legal</h4>
+                {/* Header Section: Badges + Legal Text (Compact) */}
+                <div className="flex-none space-y-2">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded border border-blue-100 uppercase tracking-wider">
+                            RD 1215/97 - Anexo I
+                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-100 uppercase tracking-wider">
+                            Criterios Foment
+                        </span>
                     </div>
-                    <p className="text-xs text-slate-600 italic font-medium leading-relaxed">
-                        "{currentPoint.legal_text || currentPoint.description}"
-                    </p>
-                </div>
 
-                {/* Description / Main Criteria */}
-                <div>
-                    <h4 className="text-sm font-bold text-gray-800 mb-2">Criterios Técnicos Generales</h4>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                        {currentPoint.details}
-                    </p>
-                </div>
-
-                {/* Expert Criteria List (Foment) */}
-                {currentPoint.expert_criteria && (
-                    <div className="bg-amber-50/50 rounded-xl p-4 border border-amber-100">
-                        <div className="flex items-center gap-2 mb-3">
-                            <Info className="w-5 h-5 text-amber-600" />
-                            <h4 className="text-sm font-bold text-amber-800">Aspectos Clave (Guía)</h4>
+                    <div className="bg-slate-50 border-l-4 border-slate-400 p-2 rounded-r-lg flex gap-3 items-start">
+                        <div className="flex items-center gap-1 mt-0.5 flex-shrink-0">
+                            <Gavel className="w-3 h-3 text-slate-500" />
+                            <span className="text-[10px] font-bold text-slate-700 uppercase">Texto Legal:</span>
                         </div>
-                        <ul className="space-y-2">
-                            {currentPoint.expert_criteria.map((criteria, idx) => (
-                                <li key={idx} className="flex items-start gap-2 text-xs text-amber-900/80 leading-snug">
-                                    <span className="min-w-[4px] h-4 mt-0.5 bg-amber-400 rounded-full"></span>
-                                    {criteria}
-                                </li>
-                            ))}
-                        </ul>
+                        <p className="text-[11px] text-slate-600 italic font-medium leading-snug line-clamp-2 hover:line-clamp-none transition-all">
+                            "{currentPoint.legal_text || currentPoint.description}"
+                        </p>
                     </div>
-                )}
+                </div>
 
-                {/* Visual Check Points */}
-                {currentPoint.check_points && ((currentPoint.check_points.length > 0) && (
-                    <div className="border border-green-100 rounded-xl overflow-hidden">
-                        <div className="bg-green-50 px-4 py-2 border-b border-green-100 flex items-center gap-2">
-                            <ListChecks className="w-4 h-4 text-green-600" />
-                            <h4 className="text-xs font-bold text-green-700 uppercase">Puntos de Verificación Visual</h4>
+                {/* Main Content: 2-Column Grid to save vertical space */}
+                <div className="flex-1 min-h-0 grid grid-cols-2 gap-4">
+
+                    {/* Left Col: Expert Criteria */}
+                    <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2">
+                        <div>
+                            <h4 className="text-xs font-bold text-gray-800 mb-1">Criterios Técnicos Generales</h4>
+                            <p className="text-xs text-gray-600 leading-relaxed">
+                                {currentPoint.details}
+                            </p>
                         </div>
-                        <div className="divide-y divide-gray-100">
-                            {currentPoint.check_points.map((cp, idx) => (
-                                <div key={idx} className="px-4 py-3 hover:bg-green-50/30 transition-colors">
-                                    <div className="flex items-center justify-between mb-1">
-                                        <span className="text-xs font-bold text-gray-700">{cp.label}</span>
-                                    </div>
-                                    <p className="text-[11px] text-gray-500">{cp.detail}</p>
+
+                        {currentPoint.expert_criteria && (
+                            <div className="bg-amber-50/50 rounded-lg p-3 border border-amber-100 flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <Info className="w-4 h-4 text-amber-600" />
+                                    <h4 className="text-xs font-bold text-amber-800">Aspectos Clave (Guía)</h4>
                                 </div>
-                            ))}
-                        </div>
+                                <ul className="space-y-1.5">
+                                    {currentPoint.expert_criteria.map((criteria, idx) => (
+                                        <li key={idx} className="flex items-start gap-2 text-[11px] text-amber-900/80 leading-snug">
+                                            <span className="min-w-[4px] h-4 mt-0.5 bg-amber-400 rounded-full flex-shrink-0"></span>
+                                            {criteria}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
-                ))}
 
-                <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+                    {/* Right Col: Check Points */}
+                    <div className="flex flex-col h-full overflow-hidden">
+                        {currentPoint.check_points && (currentPoint.check_points.length > 0) ? (
+                            <div className="border border-green-100 rounded-lg overflow-hidden flex flex-col h-full bg-white">
+                                <div className="bg-green-50 px-3 py-2 border-b border-green-100 flex items-center gap-2 flex-shrink-0">
+                                    <ListChecks className="w-4 h-4 text-green-600" />
+                                    <h4 className="text-xs font-bold text-green-700 uppercase">Verificación Visual</h4>
+                                </div>
+                                <div className="overflow-y-auto custom-scrollbar flex-1 p-0 divide-y divide-gray-100">
+                                    {currentPoint.check_points.map((cp, idx) => (
+                                        <div key={idx} className="px-3 py-2 hover:bg-green-50/30 transition-colors">
+                                            <div className="flex items-center justify-between mb-0.5">
+                                                <span className="text-[11px] font-bold text-gray-700">{cp.label}</span>
+                                            </div>
+                                            <p className="text-[10px] text-gray-500 leading-tight">{cp.detail}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="h-full flex items-center justify-center text-gray-300 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                                <span className="text-xs">Sin puntos de verificación visual</span>
+                            </div>
+                        )}
+                    </div>
+
+                </div>
+
+                {/* Footer: Refs */}
+                <div className="flex-none pt-2 border-t border-gray-100 flex gap-2">
                     {currentPoint.ntp_refs.map((ref, idx) => (
                         <span
                             key={idx}
