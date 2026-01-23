@@ -1,26 +1,41 @@
-import React from 'react';
-import { BookOpen, ExternalLink, Info, CheckCircle2, ListChecks, Gavel } from 'lucide-react';
+import React, { useState } from 'react';
+import { BookOpen, ExternalLink, Info, ListChecks, Gavel, Video, X } from 'lucide-react';
 import CorporateCard from '../layout/CorporateCard';
 import ExpertBotPanel from './ExpertBotPanel';
 
 const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
+    const [isVideoOpen, setIsVideoOpen] = useState(false);
+
     return (
         <CorporateCard
             title={`Guía Técnica: ${currentPoint.title}`}
             icon={BookOpen}
             borderColor="border-t-4 border-t-[#0ea5e9]" // Corporate Blue
         >
-            <div className="h-full flex flex-col gap-2 overflow-hidden">
+            <div className="h-full flex flex-col gap-2 overflow-hidden relative">
 
-                {/* Header Section: Badges + Legal Text (Compact) */}
+                {/* Header Section: Badges + Video Button + Legal Text */}
                 <div className="flex-none space-y-1.5">
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded border border-blue-100 uppercase tracking-wider">
-                            RD 1215/97 - Anexo I
-                        </span>
-                        <span className="text-xs font-bold px-2 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-100 uppercase tracking-wider">
-                            Criterios Foment
-                        </span>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded border border-blue-100 uppercase tracking-wider">
+                                RD 1215/97 - Anexo I
+                            </span>
+                            <span className="text-xs font-bold px-2 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-100 uppercase tracking-wider">
+                                Criterios Foment
+                            </span>
+                        </div>
+
+                        {/* Video Guide Button */}
+                        {currentPoint.video_guide && (
+                            <button
+                                onClick={() => setIsVideoOpen(true)}
+                                className="flex items-center gap-2 px-4 py-1.5 bg-[#ea580c] hover:bg-[#c2410c] text-white rounded-md shadow-sm transition-all transform active:scale-95 group"
+                            >
+                                <Video className="w-4 h-4 fill-white/20 group-hover:fill-white/40 transition-colors" />
+                                <span className="text-sm font-bold">Guía de vídeo</span>
+                            </button>
+                        )}
                     </div>
 
                     <div className="bg-slate-50 border-l-4 border-slate-400 p-2 rounded-r-lg flex gap-3 items-start">
@@ -109,6 +124,29 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
                         </span>
                     ))}
                 </div>
+
+                {/* VIDEO MODAL */}
+                {isVideoOpen && currentPoint.video_guide && (
+                    <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+                        <div className="relative w-full max-w-3xl bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800">
+                            <button
+                                onClick={() => setIsVideoOpen(false)}
+                                className="absolute top-4 right-4 z-10 p-2 bg-black/50 text-white hover:bg-white hover:text-black rounded-full transition-colors backdrop-blur-md"
+                            >
+                                <X size={20} />
+                            </button>
+                            <h3 className="absolute top-4 left-4 z-10 text-white font-bold text-lg drop-shadow-md">
+                                Guía Visual: {currentPoint.title}
+                            </h3>
+                            <video
+                                src={currentPoint.video_guide}
+                                controls
+                                autoPlay
+                                className="w-full h-auto max-h-[70vh]"
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         </CorporateCard>
     );

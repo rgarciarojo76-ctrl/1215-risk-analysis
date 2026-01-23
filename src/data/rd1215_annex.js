@@ -20,6 +20,7 @@ export const RD1215_ANNEX = [
       { id: "1.1.6", label: "¿Sistemas de mando seguros (Categoría)?", detail: "Deben resistir fallos y perturbaciones previsibles (Considerar Categoría de Mando según ISO 13849)." }
     ],
     details: "Los órganos de accionamiento deben estar situados fuera de las zonas peligrosas. Su manipulación no debe acarrear riesgos adicionales. El operador debe poder cerciorarse de la ausencia de personas. Si esto no es posible, sistema de aviso acústico/visual obligatorio.",
+    video_guide: "/videos/Organos_de_Accionamiento_RD1215.mp4",
     ntp_refs: ["Guía Foment 3.1", "NTP 235", "ISO 13849"],
     machine_type: "fixed"
   },

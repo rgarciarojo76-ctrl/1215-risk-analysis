@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Bot, User, Trash2, Brain } from 'lucide-react';
+import { Send, Bot, User, Trash2, Brain, Eye, ShieldCheck, Zap, ChevronRight } from 'lucide-react';
 import { sendChatToGemini } from '../../services/googleAiService';
 import CorporateCard from '../layout/CorporateCard';
 
@@ -129,18 +129,65 @@ const ExpertBotPanel = ({ currentPoint }) => {
 
                     {/* Suggestions Chips (Fill Empty Space initially) */}
                     {conversation.length === 1 && !isLoading && (
-                        <div className="mt-auto pt-4 pb-2 px-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2 text-center">Consultas Sugeridas</p>
-                            <div className="flex flex-wrap gap-2 justify-center">
-                                {['¿Qué debo inspeccionar visualmente?', 'Criterios Aceptación/Rechazo', 'Soluciones Técnicas'].map((suggestion, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setInput(suggestion)}
-                                        className="text-xs bg-white border border-indigo-100 text-indigo-600 px-3 py-1.5 rounded-full hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
-                                    >
-                                        {suggestion}
-                                    </button>
-                                ))}
+                        <div className="mt-auto px-4 pb-4 pt-2 animate-in fade-in slide-in-from-bottom-8 duration-700">
+
+                            {/* Stylish Header */}
+                            <div className="flex items-center justify-center gap-3 mb-4 opacity-80">
+                                <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent flex-1"></div>
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Guía Rápida de Inspección</span>
+                                <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent flex-1"></div>
+                            </div>
+
+                            {/* Spectacular Grid */}
+                            <div className="grid grid-cols-1 gap-2">
+
+                                {/* Card 1: Visual Inspection */}
+                                <button
+                                    onClick={() => setInput('¿Qué debo inspeccionar visualmente?')}
+                                    className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-indigo-50 shadow-sm hover:shadow-lg hover:border-indigo-200 transition-all duration-300 text-left overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="flex-none w-10 h-10 rounded-lg bg-blue-100/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                                        <Eye className="w-5 h-5 text-blue-600 group-hover:text-white transition-colors" />
+                                    </div>
+                                    <div className="relative z-10">
+                                        <h4 className="text-xs font-bold text-gray-700 group-hover:text-blue-700 transition-colors">Inspección Visual</h4>
+                                        <p className="text-[10px] text-gray-500 group-hover:text-blue-600/70">¿Qué elementos físicos debo buscar?</p>
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                </button>
+
+                                {/* Card 2: Acceptance Criteria */}
+                                <button
+                                    onClick={() => setInput('Criterios Aceptación/Rechazo')}
+                                    className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-indigo-50 shadow-sm hover:shadow-lg hover:border-indigo-200 transition-all duration-300 text-left overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="flex-none w-10 h-10 rounded-lg bg-emerald-100/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                                        <ShieldCheck className="w-5 h-5 text-emerald-600 group-hover:text-white transition-colors" />
+                                    </div>
+                                    <div className="relative z-10">
+                                        <h4 className="text-xs font-bold text-gray-700 group-hover:text-emerald-700 transition-colors">Criterios de Aceptación</h4>
+                                        <p className="text-[10px] text-gray-500 group-hover:text-emerald-600/70">Condiciones de rechazo y tolerancia</p>
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                                </button>
+
+                                {/* Card 3: Technical Solutions */}
+                                <button
+                                    onClick={() => setInput('Soluciones Técnicas')}
+                                    className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-indigo-50 shadow-sm hover:shadow-lg hover:border-indigo-200 transition-all duration-300 text-left overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-amber-50/50 to-orange-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="flex-none w-10 h-10 rounded-lg bg-amber-100/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
+                                        <Zap className="w-5 h-5 text-amber-600 group-hover:text-white transition-colors" />
+                                    </div>
+                                    <div className="relative z-10">
+                                        <h4 className="text-xs font-bold text-gray-700 group-hover:text-amber-700 transition-colors">Soluciones Técnicas</h4>
+                                        <p className="text-[10px] text-gray-500 group-hover:text-amber-600/70">Medidas correctivas y mejoras</p>
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                                </button>
                             </div>
                         </div>
                     )}

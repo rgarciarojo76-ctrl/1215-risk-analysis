@@ -36,22 +36,35 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
         }
     };
 
+    // Modal State
+    const [reportStatus, setReportStatus] = useState('idle'); // idle, generating, completed
+
     const handleNext = () => {
         if (!isLast) {
             setCurrentPointIndex(prev => prev + 1);
         } else {
-            // Generate Final Report and Finish
+            // Confirm Dialog (Custom or Native - keeping native for confirm, but custom for progress)
             if (window.confirm("¿Desea finalizar la inspección y generar el informe PDF?")) {
-                generateFinalReport(
-                    machineData,
-                    RD1215_ANNEX,
-                    images,
-                    markers,
-                    findings,
-                    complianceStatus
-                );
-                alert("Informe generado. La sesión ha finalizado.");
-                onBack(); // Return to start
+                setReportStatus('generating');
+
+                // Allow UI to update before blocking
+                setTimeout(() => {
+                    try {
+                        generateFinalReport(
+                            machineData,
+                            RD1215_ANNEX,
+                            images,
+                            markers,
+                            findings,
+                            complianceStatus
+                        );
+                        setReportStatus('completed');
+                    } catch (e) {
+                        console.error(e);
+                        alert("Error al generar el informe");
+                        setReportStatus('idle');
+                    }
+                }, 100);
             }
         }
     };
@@ -69,7 +82,39 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
     const progress = ((currentPointIndex + 1) / RD1215_ANNEX.length) * 100;
 
     return (
-        <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
+        <div className="flex flex-col h-screen bg-gray-50 overflow-hidden relative">
+
+            {/* REPORT GENERATION MODAL */}
+            {reportStatus !== 'idle' && (
+                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-in zoom-in-95 duration-200">
+                        {reportStatus === 'generating' ? (
+                            <>
+                                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-800 mb-2">Generando Informe...</h3>
+                                <p className="text-sm text-gray-500">Compilando datos, imágenes y evaluaciones técnicas.</p>
+                            </>
+                        ) : (
+                            <>
+                                <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <CheckCircle className="w-8 h-8 text-green-500" />
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-800 mb-2">¡Informe Listo!</h3>
+                                <p className="text-sm text-gray-500 mb-6">El documento se ha descargado correctamente.</p>
+                                <button
+                                    onClick={onBack}
+                                    className="w-full py-2.5 bg-gray-900 text-white rounded-lg font-medium hover:bg-black transition-colors"
+                                >
+                                    Volver al Inicio
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
+
             {/* Header Toolbar */}
             <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-30 flex-none">
                 <div className="flex items-center gap-4">

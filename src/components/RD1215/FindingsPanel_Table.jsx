@@ -50,6 +50,7 @@ const FindingsPanel_Table = ({ findings, setFindings, markers, setMarkers, curre
                             <thead>
                                 <tr className="text-sm text-gray-400 font-semibold uppercase tracking-wider">
                                     <th className="px-2 pb-2">REF</th>
+                                    <th className="px-2 pb-2 w-24 text-center">Criticidad</th>
                                     <th className="px-2 pb-2">Evidencia (Deficiencia)</th>
                                     <th className="px-2 pb-2">Medida Correctiva</th>
                                     <th className="w-8"></th>
@@ -60,6 +61,19 @@ const FindingsPanel_Table = ({ findings, setFindings, markers, setMarkers, curre
                                     <tr key={finding.markerId} className="bg-gray-50/50 hover:bg-blue-50/30 transition-colors rounded-lg group text-sm shadow-sm shadow-black/5">
                                         <td className="px-3 py-3 font-bold text-red-500 w-12 text-center bg-white rounded-l-lg border-y border-l border-gray-100">
                                             {finding.markerId}
+                                        </td>
+                                        <td className="px-2 py-2 bg-white border-y border-gray-100 text-center w-24">
+                                            <button
+                                                onClick={() => handleUpdateFinding(finding.markerId, 'severity', finding.severity === 'high' ? 'normal' : 'high')}
+                                                className={`flex flex-col items-center justify-center p-1.5 rounded-lg transition-all w-full border ${finding.severity === 'high'
+                                                    ? 'bg-red-50 border-red-200 text-red-600'
+                                                    : 'bg-gray-50 border-gray-100 text-gray-400 hover:bg-gray-100'
+                                                    }`}
+                                                title={finding.severity === 'high' ? "Marcado como Riesgo Grave" : "Riesgo Normal"}
+                                            >
+                                                <AlertTriangle className={`w-4 h-4 mb-0.5 ${finding.severity === 'high' ? 'fill-red-500' : ''}`} />
+                                                <span className="text-[10px] font-bold uppercase">{finding.severity === 'high' ? 'GRAVE' : 'NORMAL'}</span>
+                                            </button>
                                         </td>
                                         <td className="px-2 py-2 bg-white border-y border-gray-100">
                                             <textarea

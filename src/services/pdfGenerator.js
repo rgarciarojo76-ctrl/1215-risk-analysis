@@ -176,33 +176,79 @@ class FinalReportGenerator {
         this.doc.setFontSize(12);
         this.doc.setFont(FONTS.main, "normal");
 
+        // Conclusions Text
+        this.doc.setTextColor(...THEME.text);
+        this.doc.setFontSize(12);
+        this.doc.setFont(FONTS.main, "normal");
+
+        // Identify Critical Risks (Points with at least one 'high' severity finding)
+        const criticalPoints = [];
+        Object.entries(this.data.findings).forEach(([pointId, findingsList]) => {
+            if (findingsList.some(f => f.severity === 'high')) {
+                const point = points.find(p => p.id === pointId);
+                if (point) criticalPoints.push(point);
+            }
+        });
+
+        const criticalCount = criticalPoints.length;
+
         let conclusion = "";
         if (nonCompliant === 0) {
             conclusion = "Tras la evaluación realizada, no se han detectado desviaciones respecto a los requisitos del RD 1215/1997. El equipo de trabajo se considera ADECUADO para su uso, siempre que se mantengan las condiciones actuales de mantenimiento y operación.";
         } else {
-            conclusion = `Se han detectado ${nonCompliant} desviaciones que requieren subsanación. El equipo NO PUEDE considerarse adecuado hasta que se implementen las medidas correctoras indicadas en este informe. Se recomienda priorizar las deficiencias marcadas como críticas para garantizar la seguridad inmediata de los operarios.`;
+            conclusion = `Se han detectado ${nonCompliant} desviaciones que requieren subsanación. `;
+            if (criticalCount > 0) {
+                conclusion += `ATENCIÓN: Se han identificado ${criticalCount} RIESGOS CRÍTICOS que deben ser corregidos con carácter inmediato para garantizar la seguridad de los operarios. El uso del equipo debería limitarse o paralizarse hasta su subsanación.`;
+            } else {
+                conclusion += "El equipo NO PUEDE considerarse adecuado hasta que se implementen las medidas correctoras indicadas en este informe. Se recomienda planificar las acciones correctivas a corto plazo.";
+            }
         }
 
         const splitConclusion = this.doc.splitTextToSize(conclusion, this.pageWidth - 40);
         this.doc.text(splitConclusion, 20, 110);
 
-        // Critical Risk List (Placeholder logic: All Non-compliant are Risks)
-        if (nonCompliant > 0) {
+        // List of Risks
+        let yList = 160;
+
+        // 1. Critical Risks
+        if (criticalCount > 0) {
             this.doc.setTextColor(...THEME.danger);
             this.doc.setFontSize(14);
             this.doc.setFont(FONTS.main, "bold");
-            this.doc.text("Riesgos Detectados", 20, 150);
+            this.doc.text(`RIESGOS CRÍTICOS DETECTADOS (${criticalCount})`, 20, 150);
 
-            const ncPoints = points.filter(p => status[p.id] === 'non_compliant');
-            let yList = 160;
+            // Sort critical points by ID
+            criticalPoints.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
 
-            ncPoints.forEach(p => {
+            criticalPoints.forEach(p => {
                 this.doc.setTextColor(...THEME.text);
+                this.doc.setFontSize(10);
+                this.doc.setFont(FONTS.main, "bold"); // Bold for critical
+                const line = `• Punto ${p.id}: ${p.title}`;
+                this.doc.text(line, 25, yList);
+                yList += 7;
+            });
+
+            yList += 10; // Spacing
+        }
+
+        // 2. Other Non-Compliant Points (if space permits or logic dictates)
+        const otherNonCompliant = points.filter(p => status[p.id] === 'non_compliant' && !criticalPoints.includes(p));
+
+        if (otherNonCompliant.length > 0) {
+            this.doc.setTextColor(...THEME.warning); // Orange for others
+            this.doc.setFontSize(14);
+            this.doc.setFont(FONTS.main, "bold");
+            this.doc.text(`Otras Desviaciones (${otherNonCompliant.length})`, 20, yList);
+            yList += 10;
+
+            otherNonCompliant.forEach(p => {
+                this.doc.setTextColor(...THEME.lightText);
                 this.doc.setFontSize(10);
                 this.doc.setFont(FONTS.main, "normal");
                 const line = `• Punto ${p.id}: ${p.title}`;
                 this.doc.text(line, 25, yList);
-                yList += 8;
+                yList += 7;
             });
         }
     }
@@ -280,7 +326,12 @@ class FinalReportGenerator {
             const pointFindings = findings[point.id] || [];
             if (pointFindings.length > 0) {
                 const tableData = pointFindings.map(f => [
-                    f.markerId,
+                    {
+                        content: f.markerId,
+                        styles: f.severity === 'high'
+                            ? { fillColor: [220, 53, 69], textColor: 255, fontStyle: 'bold' }
+                            : {}
+                    },
                     f.evidence || "No especificado",
                     f.measure || "Pendiente de definir"
                 ]);
