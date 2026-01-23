@@ -90,7 +90,10 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
                                     {currentPoint.check_points.map((cp, idx) => (
                                         <div key={idx} className="px-3 py-2.5 hover:bg-green-50/30 transition-colors">
                                             <div className="flex items-center justify-between mb-1">
-                                                <span className="text-xs font-bold text-gray-700">{cp.label}</span>
+                                                <span className="text-xs font-bold text-gray-700">
+                                                    <span className="text-green-600 mr-1">{cp.id}</span>
+                                                    {cp.label}
+                                                </span>
                                             </div>
                                             <p className="text-xs text-gray-500 leading-tight">{cp.detail}</p>
                                         </div>
