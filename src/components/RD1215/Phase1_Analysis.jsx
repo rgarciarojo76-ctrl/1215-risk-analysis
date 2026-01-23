@@ -136,16 +136,18 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                 ></div>
             </div>
 
-            {/* Main Content Grid */}
-            <div className="flex-1 p-4 grid grid-cols-12 grid-rows-12 gap-4 h-[calc(100vh-4.25rem)]">
+            {/* Main Content Grid - Fixed Screen Height, No Scroll on body */}
+            <div className="flex-1 p-4 grid grid-cols-12 grid-rows-12 gap-4 h-[calc(100vh-4.25rem)] overflow-hidden">
 
-                {/* Panel A: Top (Technical Assistance) - Spans full width, takes top 25% height approx */}
-                <div className="col-span-12 row-span-3 min-h-0">
+                {/* AREA 1: INFORMATION (Top 2/3 approx -> 8/12 rows) */}
+                <div className="col-span-12 row-span-8 min-h-0">
                     <TopPanel_TechnicalAssistance currentPoint={currentPoint} />
                 </div>
 
-                {/* Panel B: Bottom Left (Vision) - Spans 4 columns, takes remaining height */}
-                <div className="col-span-5 row-span-9 min-h-0">
+                {/* AREA 2: UTILITIES (Bottom 1/3 approx -> 4/12 rows) */}
+
+                {/* Utility A: Vision (Left) */}
+                <div className="col-span-4 row-span-4 min-h-0">
                     <VisionPanel_Collaborative
                         currentPoint={currentPoint}
                         currentPointId={currentPoint.id}
@@ -157,8 +159,9 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                     />
                 </div>
 
-                {/* Panel C: Bottom Right (Findings) - Spans 8 columns, takes remaining height */}
-                <div className="col-span-7 row-span-8 min-h-0">
+                {/* Utility B: Findings List (Right) */}
+                {/* We reserve the last row fraction for navigation or include it inside */}
+                <div className="col-span-8 row-span-3 min-h-0">
                     <FindingsPanel_Table
                         currentPointId={currentPoint.id}
                         findings={findings}
@@ -168,25 +171,24 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                     />
                 </div>
 
-                {/* Navigation Strip - Bottom Right */}
-                <div className="col-span-7 row-span-1 flex items-center justify-end gap-3 min-h-0">
+                {/* Navigation (Bottom Right Strip) */}
+                <div className="col-span-8 row-span-1 flex items-center justify-end gap-3 min-h-0">
                     <button
                         onClick={handlePrev}
-                        className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                        className="px-6 py-2 h-full rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors w-32"
                     >
                         Anterior
                     </button>
                     <button
                         onClick={handleNext}
-                        className="px-6 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-all flex items-center gap-2"
+                        className="px-6 py-2 h-full rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 flex-1 max-w-xs"
                     >
-                        {isLast ? "Finalizar Inspección" : "Siguiente Punto"}
-                        {!isLast && <ChevronRight className="w-4 h-4" />}
+                        {isLast ? "Finalizar" : "Siguiente"}
+                        {!isLast && <ChevronRight className="w-5 h-5" />}
                     </button>
                 </div>
 
-            </div>
-        </div>
+            </div>        </div>
     );
 };
 
