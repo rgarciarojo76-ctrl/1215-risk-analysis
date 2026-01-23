@@ -129,64 +129,58 @@ const ExpertBotPanel = ({ currentPoint }) => {
 
                     {/* Suggestions Chips (Fill Empty Space initially) */}
                     {conversation.length === 1 && !isLoading && (
-                        <div className="mt-auto px-4 pb-4 pt-2 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                        <div className="mt-auto px-2 pb-2 pt-2 animate-in fade-in slide-in-from-bottom-8 duration-700">
 
-                            {/* Stylish Header */}
-                            <div className="flex items-center justify-center gap-3 mb-4 opacity-80">
-                                <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent flex-1"></div>
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Guía Rápida de Inspección</span>
-                                <div className="h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent flex-1"></div>
+                            {/* Compact Stylish Header */}
+                            <div className="flex items-center justify-center gap-2 mb-2 opacity-60">
+                                <div className="h-px bg-indigo-200 flex-1"></div>
+                                <span className="text-[9px] font-bold uppercase tracking-widest text-indigo-400">Guía Rápida</span>
+                                <div className="h-px bg-indigo-200 flex-1"></div>
                             </div>
 
-                            {/* Spectacular Grid */}
-                            <div className="grid grid-cols-1 gap-2">
+                            {/* Compact Spectacular Grid (Horizontal) */}
+                            <div className="grid grid-cols-3 gap-2">
 
                                 {/* Card 1: Visual Inspection */}
                                 <button
                                     onClick={() => setInput('¿Qué debo inspeccionar visualmente?')}
-                                    className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-indigo-50 shadow-sm hover:shadow-lg hover:border-indigo-200 transition-all duration-300 text-left overflow-hidden"
+                                    className="group relative flex flex-col items-center justify-center p-2 bg-white rounded-lg border border-indigo-50 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300 overflow-hidden h-20"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <div className="flex-none w-10 h-10 rounded-lg bg-blue-100/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                                        <Eye className="w-5 h-5 text-blue-600 group-hover:text-white transition-colors" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-indigo-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="flex-none mb-1.5 p-1.5 rounded-md bg-blue-100/50 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                                        <Eye className="w-4 h-4 text-blue-600 group-hover:text-white transition-colors" />
                                     </div>
-                                    <div className="relative z-10">
-                                        <h4 className="text-xs font-bold text-gray-700 group-hover:text-blue-700 transition-colors">Inspección Visual</h4>
-                                        <p className="text-[10px] text-gray-500 group-hover:text-blue-600/70">¿Qué elementos físicos debo buscar?</p>
-                                    </div>
-                                    <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                    <h4 className="relative z-10 text-[10px] font-bold text-gray-700 text-center leading-tight group-hover:text-blue-700">
+                                        Inspección<br />Visual
+                                    </h4>
                                 </button>
 
                                 {/* Card 2: Acceptance Criteria */}
                                 <button
                                     onClick={() => setInput('Criterios Aceptación/Rechazo')}
-                                    className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-indigo-50 shadow-sm hover:shadow-lg hover:border-indigo-200 transition-all duration-300 text-left overflow-hidden"
+                                    className="group relative flex flex-col items-center justify-center p-2 bg-white rounded-lg border border-indigo-50 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300 overflow-hidden h-20"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <div className="flex-none w-10 h-10 rounded-lg bg-emerald-100/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
-                                        <ShieldCheck className="w-5 h-5 text-emerald-600 group-hover:text-white transition-colors" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-teal-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="flex-none mb-1.5 p-1.5 rounded-md bg-emerald-100/50 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                                        <ShieldCheck className="w-4 h-4 text-emerald-600 group-hover:text-white transition-colors" />
                                     </div>
-                                    <div className="relative z-10">
-                                        <h4 className="text-xs font-bold text-gray-700 group-hover:text-emerald-700 transition-colors">Criterios de Aceptación</h4>
-                                        <p className="text-[10px] text-gray-500 group-hover:text-emerald-600/70">Condiciones de rechazo y tolerancia</p>
-                                    </div>
-                                    <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                                    <h4 className="relative z-10 text-[10px] font-bold text-gray-700 text-center leading-tight group-hover:text-emerald-700">
+                                        Criterios<br />Aceptación
+                                    </h4>
                                 </button>
 
                                 {/* Card 3: Technical Solutions */}
                                 <button
                                     onClick={() => setInput('Soluciones Técnicas')}
-                                    className="group relative flex items-center gap-3 p-3 bg-white rounded-xl border border-indigo-50 shadow-sm hover:shadow-lg hover:border-indigo-200 transition-all duration-300 text-left overflow-hidden"
+                                    className="group relative flex flex-col items-center justify-center p-2 bg-white rounded-lg border border-indigo-50 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300 overflow-hidden h-20"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-amber-50/50 to-orange-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <div className="flex-none w-10 h-10 rounded-lg bg-amber-100/50 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
-                                        <Zap className="w-5 h-5 text-amber-600 group-hover:text-white transition-colors" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-amber-50/50 to-orange-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="flex-none mb-1.5 p-1.5 rounded-md bg-amber-100/50 group-hover:scale-110 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
+                                        <Zap className="w-4 h-4 text-amber-600 group-hover:text-white transition-colors" />
                                     </div>
-                                    <div className="relative z-10">
-                                        <h4 className="text-xs font-bold text-gray-700 group-hover:text-amber-700 transition-colors">Soluciones Técnicas</h4>
-                                        <p className="text-[10px] text-gray-500 group-hover:text-amber-600/70">Medidas correctivas y mejoras</p>
-                                    </div>
-                                    <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                                    <h4 className="relative z-10 text-[10px] font-bold text-gray-700 text-center leading-tight group-hover:text-amber-700">
+                                        Soluciones<br />Técnicas
+                                    </h4>
                                 </button>
                             </div>
                         </div>
