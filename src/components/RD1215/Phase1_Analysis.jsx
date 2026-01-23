@@ -71,7 +71,7 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
     return (
         <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
             {/* Header Toolbar */}
-            <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-30">
+            <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-30 flex-none">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="text-gray-500 hover:bg-gray-100 p-2 rounded-lg transition-colors">
                         <ChevronLeft className="w-5 h-5" />
@@ -85,32 +85,32 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                     {/* Compliance Toggles */}
                     <div className="flex bg-gray-100 p-1 rounded-lg">
                         <button
                             onClick={() => toggleCompliance('compliant')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${complianceStatus[currentPoint.id] === 'compliant'
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${complianceStatus[currentPoint.id] === 'compliant'
                                 ? 'bg-green-500 text-white shadow-sm'
-                                : 'text-gray-600 hover:text-gray-900'
+                                : 'text-gray-500 hover:text-gray-900'
                                 }`}
                         >
-                            <CheckCircle className="w-4 h-4" />
+                            <CheckCircle className="w-3.5 h-3.5" />
                             CUMPLE
                         </button>
                         <button
                             onClick={() => toggleCompliance('non_compliant')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${complianceStatus[currentPoint.id] === 'non_compliant'
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${complianceStatus[currentPoint.id] === 'non_compliant'
                                 ? 'bg-red-500 text-white shadow-sm'
-                                : 'text-gray-600 hover:text-gray-900'
+                                : 'text-gray-500 hover:text-gray-900'
                                 }`}
                         >
-                            <XCircle className="w-4 h-4" />
+                            <XCircle className="w-3.5 h-3.5" />
                             NO CUMPLE
                         </button>
                     </div>
 
-                    <div className="h-8 w-px bg-gray-300 mx-2"></div>
+                    <div className="h-6 w-px bg-gray-200"></div>
 
                     <button
                         onClick={() => generateItemReport(
@@ -120,16 +120,43 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                             markers[currentPoint.id] || [],
                             findings[currentPoint.id] || []
                         )}
-                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium shadow-sm active:scale-[0.98] transition-all"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 text-xs font-medium shadow-sm active:scale-[0.98] transition-all"
                     >
-                        <FileDown className="w-4 h-4" />
-                        Reporte Item
+                        <FileDown className="w-3.5 h-3.5" />
+                        Reporte
                     </button>
+
+                    <div className="h-6 w-px bg-gray-200"></div>
+
+                    {/* Integrated Navigation */}
+                    <div className="flex items-center gap-1">
+                        <button
+                            onClick={handlePrev}
+                            disabled={isFirst}
+                            className={`p-2 rounded-lg border border-gray-200 transition-all ${isFirst
+                                ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                                : 'bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-300 shadow-sm'}`}
+                            title="Anterior"
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                        </button>
+
+                        <button
+                            onClick={handleNext}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm ${isLast
+                                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                }`}
+                        >
+                            {isLast ? "Finalizar" : "Siguiente"}
+                            {!isLast && <ChevronRight className="w-4 h-4" />}
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {/* Progress Bar */}
-            <div className="h-1 bg-gray-200 w-full">
+            <div className="h-1 bg-gray-200 w-full relative z-20 flex-none">
                 <div
                     className="h-full bg-blue-600 transition-all duration-500 ease-out"
                     style={{ width: `${progress}%` }}
@@ -159,9 +186,8 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                     />
                 </div>
 
-                {/* Utility B: Findings List (Right) */}
-                {/* We reserve the last row fraction for navigation or include it inside */}
-                <div className="col-span-8 row-span-3 min-h-0">
+                {/* Utility B: Findings List (Right) - Now takes full 4 rows height */}
+                <div className="col-span-8 row-span-4 min-h-0">
                     <FindingsPanel_Table
                         currentPointId={currentPoint.id}
                         findings={findings}
@@ -171,24 +197,8 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                     />
                 </div>
 
-                {/* Navigation (Bottom Right Strip) */}
-                <div className="col-span-8 row-span-1 flex items-center justify-end gap-3 min-h-0">
-                    <button
-                        onClick={handlePrev}
-                        className="px-6 py-2 h-full rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors w-32"
-                    >
-                        Anterior
-                    </button>
-                    <button
-                        onClick={handleNext}
-                        className="px-6 py-2 h-full rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 flex-1 max-w-xs"
-                    >
-                        {isLast ? "Finalizar" : "Siguiente"}
-                        {!isLast && <ChevronRight className="w-5 h-5" />}
-                    </button>
-                </div>
-
-            </div>        </div>
+            </div>
+        </div>
     );
 };
 
