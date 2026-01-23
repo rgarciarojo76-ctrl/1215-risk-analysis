@@ -79,7 +79,15 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                     <div>
                         <h1 className="text-lg font-bold text-gray-800">{machineData.name}</h1>
                         <div className="flex items-center gap-2 text-xs text-gray-500">
-                            <span className="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded uppercase font-semibold tracking-wider">{machineData.type}</span>
+                            <span className="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded uppercase font-semibold tracking-wider">
+                                {{
+                                    'generic_fixed': 'Equipo Fijo Genérico',
+                                    'press': 'Prensa Mecánica / Hidráulica',
+                                    'lathe': 'Torno Convencional',
+                                    'milling': 'Fresadora Universal',
+                                    'saw': 'Sierra de Cinta'
+                                }[machineData.type] || machineData.type}
+                            </span>
                             <span>• Punto {currentPointIndex + 1} de {RD1215_ANNEX.length}</span>
                         </div>
                     </div>
@@ -144,8 +152,8 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                         <button
                             onClick={handleNext}
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm ${isLast
-                                    ? 'bg-green-600 hover:bg-green-700 text-white'
-                                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                ? 'bg-green-600 hover:bg-green-700 text-white'
+                                : 'bg-blue-600 hover:bg-blue-700 text-white'
                                 }`}
                         >
                             {isLast ? "Finalizar" : "Siguiente"}
