@@ -52,7 +52,15 @@ const ExpertBotPanel = ({ currentPoint }) => {
             setConversation(prev => [...prev, { role: 'model', content: responseText }]);
         } catch (error) {
             console.error("Chat Error:", error);
-            setConversation(prev => [...prev, { role: 'model', content: "Lo siento, ha ocurrido un error al consultar al experto. Por favor, inténtalo de nuevo." }]);
+            let errorMessage = "Lo siento, ha ocurrido un error técnico.";
+
+            if (error.message.includes("API Key")) {
+                errorMessage = "⚠️ Error de Configuración: No se ha detectado la clave API de Google Gemini en el servidor (GOOGLE_GEMINI_API_KEY). Por favor, agrégala en las variables de entorno de Vercel.";
+            } else if (error.message.includes("Backend")) {
+                errorMessage = `Error del Servidor: ${error.message}`;
+            }
+
+            setConversation(prev => [...prev, { role: 'model', content: errorMessage }]);
         } finally {
             setIsLoading(false);
         }
