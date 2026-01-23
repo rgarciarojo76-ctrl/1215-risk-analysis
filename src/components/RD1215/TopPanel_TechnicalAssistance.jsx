@@ -11,39 +11,38 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
             title={`Guía Técnica: ${currentPoint.title}`}
             icon={BookOpen}
             borderColor="border-t-4 border-t-[#0ea5e9]" // Corporate Blue
+            headerActions={
+                <>
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded border border-blue-100 uppercase tracking-wider">
+                            RD 1215/97
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-100 uppercase tracking-wider">
+                            Criterios Foment
+                        </span>
+                    </div>
+                    {currentPoint.video_guide && (
+                        <button
+                            onClick={() => setIsVideoOpen(true)}
+                            className="flex items-center gap-1.5 px-2 py-1 bg-[#ea580c] hover:bg-[#c2410c] text-white rounded shadow-sm transition-all transform active:scale-95 group text-xs"
+                        >
+                            <Video className="w-3.5 h-3.5 fill-white/20 group-hover:fill-white/40" />
+                            <span className="font-bold">Vídeo</span>
+                        </button>
+                    )}
+                </>
+            }
         >
             <div className="h-full flex flex-col gap-2 overflow-hidden relative">
 
-                {/* Header Section: Badges + Video Button + Legal Text */}
-                <div className="flex-none space-y-1.5">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded border border-blue-100 uppercase tracking-wider">
-                                RD 1215/97 - Anexo I
-                            </span>
-                            <span className="text-xs font-bold px-2 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-100 uppercase tracking-wider">
-                                Criterios Foment
-                            </span>
-                        </div>
-
-                        {/* Video Guide Button */}
-                        {currentPoint.video_guide && (
-                            <button
-                                onClick={() => setIsVideoOpen(true)}
-                                className="flex items-center gap-2 px-4 py-1.5 bg-[#ea580c] hover:bg-[#c2410c] text-white rounded-md shadow-sm transition-all transform active:scale-95 group"
-                            >
-                                <Video className="w-4 h-4 fill-white/20 group-hover:fill-white/40 transition-colors" />
-                                <span className="text-sm font-bold">Guía de vídeo</span>
-                            </button>
-                        )}
-                    </div>
-
+                {/* Legal Text Section */}
+                <div className="flex-none">
                     <div className="bg-slate-50 border-l-4 border-slate-400 p-2 rounded-r-lg flex gap-3 items-start">
                         <div className="flex items-center gap-1 mt-0.5 flex-shrink-0">
                             <Gavel className="w-3.5 h-3.5 text-slate-500" />
                             <span className="text-xs font-bold text-slate-700 uppercase">Texto Legal:</span>
                         </div>
-                        <p className="text-sm text-slate-600 italic font-medium leading-relaxed line-clamp-3 hover:line-clamp-none transition-all">
+                        <p className="text-xs text-slate-600 italic font-medium leading-relaxed line-clamp-3 hover:line-clamp-none transition-all">
                             "{currentPoint.legal_text || currentPoint.description}"
                         </p>
                     </div>
