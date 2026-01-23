@@ -1,6 +1,7 @@
 import React from 'react';
 import { BookOpen, ExternalLink, Info, CheckCircle2, ListChecks, Gavel } from 'lucide-react';
 import CorporateCard from '../layout/CorporateCard';
+import ExpertBotPanel from './ExpertBotPanel';
 
 const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
     return (
@@ -33,11 +34,11 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
                     </div>
                 </div>
 
-                {/* Main Content: 2-Column Grid to save vertical space */}
-                <div className="flex-1 min-h-0 grid grid-cols-2 gap-4">
+                {/* Main Content: 3-Column Grid */}
+                <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
 
-                    {/* Left Col: Expert Criteria */}
-                    <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2">
+                    {/* Col 1: Expert Criteria */}
+                    <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2 min-h-0">
                         <div>
                             <h4 className="text-sm font-bold text-gray-800 mb-1">Criterios Técnicos Generales</h4>
                             <p className="text-sm text-gray-600 leading-relaxed">
@@ -63,7 +64,7 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
                         )}
                     </div>
 
-                    {/* Right Col: Check Points */}
+                    {/* Col 2: Check Points */}
                     <div className="flex flex-col h-full overflow-hidden">
                         {currentPoint.check_points && (currentPoint.check_points.length > 0) ? (
                             <div className="border border-green-100 rounded-lg overflow-hidden flex flex-col h-full bg-white">
@@ -87,6 +88,11 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
                                 <span className="text-sm">Sin puntos de verificación visual</span>
                             </div>
                         )}
+                    </div>
+
+                    {/* Col 3: Expert System Chatbot */}
+                    <div className="flex flex-col h-full overflow-hidden">
+                        <ExpertBotPanel currentPoint={currentPoint} />
                     </div>
 
                 </div>

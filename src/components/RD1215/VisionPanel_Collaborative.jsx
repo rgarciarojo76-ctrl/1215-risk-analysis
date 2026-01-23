@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Camera, RefreshCw, X, UploadCloud, Eye } from 'lucide-react';
 import CorporateCard from '../layout/CorporateCard';
+import { analyzeImageWithGemini } from '../../services/googleAiService';
 
 const VisionPanel_Collaborative = ({
     currentPoint,
@@ -59,20 +60,54 @@ const VisionPanel_Collaborative = ({
         if (!image) return;
         setIsAnalyzing(true);
         try {
-            setTimeout(() => {
-                if ((markers[currentPointId] || []).length === 0) {
-                    const mockMarker = { id: 1, x: 50, y: 50 };
-                    setMarkers(prev => ({ ...prev, [currentPointId]: [mockMarker] }));
-                    onAddFinding(1, "Posible deficiencia detectada por IA (Revisar)", "Instalar resguardo fijo.");
-                }
-            }, 1000);
+            // Call Real AI Service with Context
+            const result = await analyzeImageWithGemini(image, currentPoint);
+
+            if (result && result.risks && result.risks.length > 0) {
+                const newMarkers = [];
+                let nextId = (markers[currentPointId]?.length || 0) + 1;
+
+                const currentFindings = [];
+
+                result.risks.forEach(risk => {
+                    // Convert Gemini 1000-scale coordinates to %
+                    // coordinates: [ymin, xmin, ymax, xmax]
+                    const [ymin, xmin, ymax, xmax] = risk.coordinates || [500, 500, 500, 500]; // Default center if missing
+
+                    const centerX = ((xmin + xmax) / 2) / 10;
+                    const centerY = ((ymin + ymax) / 2) / 10;
+
+                    const markerId = nextId++;
+
+                    newMarkers.push({
+                        id: markerId,
+                        x: centerX,
+                        y: centerY
+                    });
+
+                    // Add finding via parent handler
+                    // Signature: (id, description, measure)
+                    onAddFinding(markerId, risk.factor, risk.medida); // Assuming parent handles state update for findings
+                });
+
+                // Update markers state
+                setMarkers(prev => ({
+                    ...prev,
+                    [currentPointId]: [...(prev[currentPointId] || []), ...newMarkers]
+                }));
+            } else {
+                // No risks found logic (optional toast)
+                console.log("AI analysis completed: No risks found.");
+            }
 
         } catch (error) {
-            console.error("AI Error:", error);
+            console.error("AI Analysis Error:", error);
+            // Optional: Error toast
         } finally {
             setIsAnalyzing(false);
         }
     }
+
 
     return (
         <CorporateCard

@@ -1,80 +1,79 @@
 // import { GoogleGenerativeAI } from "@google/generative-ai"; // Removed - Backend only
 
-const SYSTEM_PROMPT = `
+
+const generateSystemPrompt = (currentPoint) => `
 ROL Y CONTEXTO
-Actúa como un técnico superior en prevención de riesgos laborales, aplicando estrictamente la Ley 31/1995, sus Reales Decretos de desarrollo, y los criterios técnicos del INSST.
-Tu función NO ES recrear ni reinterpretar la escena, sino intervenir mínimamente sobre una fotografía real existente (Digital Twin).
+Actúa como un técnico superior en prevención de riesgos laborales, aplicando el RD 1215/1997.
+Estás evaluando el PUNTO ${currentPoint?.id || 'General'}: "${currentPoint?.title || ''}".
 
-PRINCIPIO FUNDAMENTAL (OBLIGATORIO)
-La fotografía original es inmutable. Debe tratarse como una imagen base fija.
-Si un elemento no está directamente relacionado con una medida preventiva, no puede ser modificado.
+CONTEXTO TÉCNICO ESPECÍFICO:
+"${currentPoint?.legal_text || ''}"
 
-FASE 1 · ANÁLISIS 
-Identifica únicamente los factores de riesgo laborales OBJETIVAMENTE VISIBLES.
-Selecciona todas las medidas preventivas razonables (Técnicas, Equipos, Señalización, EPIs).
+CRITERIOS DE EXPERTO (BUSCAR ACTIVAMENTE):
+${currentPoint?.expert_criteria?.map(c => `- ${c}`).join('\n') || '- Analizar riesgos generales.'}
 
-FASE 2 · GENERACIÓN DE "dalle_prompt" (Descripción Visual Definitiva / DIGITAL TWIN)
-El objetivo es editar la imagen original para integrar las medidas, manteniendo la escena REAL (Digital Twin).
+PUNTOS DE VERIFICACIÓN VISUAL (EVIDENCIAS):
+${currentPoint?.check_points?.map(cp => `- ${cp.label}: ${cp.detail}`).join('\n') || ''}
 
-Escribe un prompt en INGLÉS para un modelo Image-to-Image.
-DEBE EMPEZAR SIEMPRE ASÍ:
-"Photorealistic editing. EDIT the image to INSTALL safety measures while keeping the original room structure. CHANGE the following:"
-
-ESTRUCTURA OBLIGATORIA DEL PROMPT:
-1.  **Scene Anchor**: "Background: Keep existing red doors and walls. Do NOT change camera angle."
-2.  **Required Edits (FORCEFUL)**:
-    -   "INSTALL a visible green exit sign above the door."
-    -   "PLACE a yellow safety barrier in front of..."
-    -   "APPLY yellow and black hazard tape on the floor."
-    -   "REMOVE obstacles from the floor."
-3.  **Output Quality**: "The final image MUST show these safety additions clearly. 8k resolution, industrial standard."
-
-IMPORTANTE:
-- Usa verbos de ACCIÓN: "INSTALL", "ADD", "PLACE", "MOUNT".
-- Sé explícito con los colores (Yellow guardrail, Green sign).
-- El prompt debe describir la escena MODIFICADA, no la original.
+TU TAREA:
+1. Analiza la imagen buscando CUMPLIMIENTO o INCUMPLIMIENTO de estos criterios específicos.
+2. Si ves un riesgo claro relacionado con estos puntos, márcalo.
+3. Si la imagen cumple los criterios visuales (ej. colores correctos, resguardos presentes), indícalo también si es relevante, pero prioriza los RIESGOS.
 
 FORMATO DE SALIDA (ESTRICTAMENTE JSON):
-Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
+Responde ÚNICAMENTE con un objeto JSON válido:
 {
   "risks": [
     {
       "id": 1,
-      "factor": "Descripción técnica del riesgo",
-      "evidencia": "Qué se observa visualmente",
-      "medida": "Medida preventiva técnica (INSST)",
-      "fuente": "Normativa legal / NTP aplicable",
-      "probabilidad": "Baja/Media/Alta",
-      "severidad": "Baja/Media/Alta",
-      "grado_riesgo": "Trivial/Tolerable/Moderado/Importante/Intolerable",
-      "plazo": "Inmediato/1 mes...",
-      "coste_estimado": "€...",
-      "coordinates": [ymin, xmin, ymax, xmax] // Coordenadas 0-1000.
+      "factor": "Nombre corto del riesgo o defecto detectado",
+      "evidencia": "Explicación de por qué incumple el criterio específico",
+      "medida": "Medida correctiva sugerida",
+      "probabilidad": "Media",
+      "severidad": "Alta",
+      "coordinates": [ymin, xmin, ymax, xmax] // Coordenadas 0-1000 del elemento en la imagen.
     }
-  ],
-  "dalle_prompt": "El prompt 'Digital Twin' descrito arriba."
+  ]
 }
 `;
 
 
+
 // Note: apiKey is no longer used on frontend, but kept in signature to avoid breaking component calls immediately
-export const analyzeImageWithGemini = async (imageFile, apiKey) => {
-    // Convert file to base64
-    const base64Promise = new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-        reader.readAsDataURL(imageFile);
-    });
-    const base64Data = await base64Promise;
+// Note: input can be a File object or a Base64 Data URL string
+export const analyzeImageWithGemini = async (input, currentPoint) => {
+    let base64Data = '';
+    let mimeType = 'image/jpeg'; // Default
+
+    if (input instanceof File) {
+        mimeType = input.type;
+        base64Data = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result.split(',')[1]);
+            reader.readAsDataURL(input);
+        });
+    } else if (typeof input === 'string' && input.startsWith('data:')) {
+        // Handle Data URL: "data:image/png;base64,..."
+        const matches = input.match(/^data:(.+);base64,(.+)$/);
+        if (matches) {
+            mimeType = matches[1];
+            base64Data = matches[2];
+        }
+    } else {
+        throw new Error("Invalid image input. Must be File or Data URL.");
+    }
+
+    // Generate Context-Aware Prompt
+    const systemPrompt = generateSystemPrompt(currentPoint);
 
     try {
         const response = await fetch('/api/analyze', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                systemPrompt: SYSTEM_PROMPT,
+                systemPrompt: systemPrompt,
                 imageBase64: base64Data,
-                mimeType: imageFile.type
+                mimeType: mimeType
             })
         });
 
@@ -131,6 +130,7 @@ Responde ÚNICAMENTE con un objeto JSON válido:
     }
 };
 
+
 export const generateImageWithImagen = async (prompt, apiKey, imageBase64) => {
     try {
         const response = await fetch('/api/generate', {
@@ -151,3 +151,25 @@ export const generateImageWithImagen = async (prompt, apiKey, imageBase64) => {
         throw error;
     }
 };
+
+export const sendChatToGemini = async (message, context, history) => {
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message, context, history })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Backend Chat Failed');
+        }
+
+        const data = await response.json();
+        return data.reply;
+    } catch (error) {
+        console.error("Error calling Backend Chat:", error);
+        throw error;
+    }
+};
+
