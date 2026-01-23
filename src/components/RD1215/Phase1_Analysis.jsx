@@ -216,38 +216,39 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                 ></div>
             </div>
 
-            {/* Main Content Grid - Fixed Screen Height, No Scroll on body */}
-            <div className="flex-1 p-4 grid grid-cols-12 grid-rows-12 gap-4 h-[calc(100vh-4.25rem)] overflow-hidden">
+            {/* Main Content Grid - Optimized Density (Full Screen, No Scroll) */}
+            <div className="flex-1 p-2 flex flex-col gap-2 h-[calc(100vh-4.25rem)] overflow-hidden">
 
-                {/* AREA 1: INFORMATION (Top 2/3 approx -> 8/12 rows) */}
-                <div className="col-span-12 row-span-7 min-h-0">
+                {/* AREA 1: INFORMATION (Top ~60%) */}
+                <div className="flex-[55] min-h-0">
                     <TopPanel_TechnicalAssistance currentPoint={currentPoint} />
                 </div>
 
-                {/* AREA 2: UTILITIES (Bottom 1/3 approx -> 4/12 rows) */}
+                {/* AREA 2: UTILITIES (Bottom ~40%) */}
+                <div className="flex-[45] min-h-0 flex gap-2">
+                    {/* Utility A: Vision (Left 35%) */}
+                    <div className="flex-[35] min-h-0">
+                        <VisionPanel_Collaborative
+                            currentPoint={currentPoint}
+                            currentPointId={currentPoint.id}
+                            markers={markers}
+                            setMarkers={setMarkers}
+                            images={images}
+                            setImages={setImages}
+                            onAddFinding={handleAddFinding}
+                        />
+                    </div>
 
-                {/* Utility A: Vision (Left) */}
-                <div className="col-span-4 row-span-5 min-h-0">
-                    <VisionPanel_Collaborative
-                        currentPoint={currentPoint}
-                        currentPointId={currentPoint.id}
-                        markers={markers}
-                        setMarkers={setMarkers}
-                        images={images}
-                        setImages={setImages}
-                        onAddFinding={handleAddFinding}
-                    />
-                </div>
-
-                {/* Utility B: Findings List (Right) - Now takes full 4 rows height */}
-                <div className="col-span-8 row-span-5 min-h-0">
-                    <FindingsPanel_Table
-                        currentPointId={currentPoint.id}
-                        findings={findings}
-                        setFindings={setFindings}
-                        markers={markers}
-                        setMarkers={setMarkers}
-                    />
+                    {/* Utility B: Findings List (Right 65%) */}
+                    <div className="flex-[65] min-h-0">
+                        <FindingsPanel_Table
+                            currentPointId={currentPoint.id}
+                            findings={findings}
+                            setFindings={setFindings}
+                            markers={markers}
+                            setMarkers={setMarkers}
+                        />
+                    </div>
                 </div>
 
             </div>
