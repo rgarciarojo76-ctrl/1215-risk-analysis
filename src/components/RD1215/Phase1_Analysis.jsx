@@ -227,15 +227,15 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
             </div>
 
             {/* Main Content Grid - Optimized Density (Full Screen, No Scroll) */}
-            <div className="flex-1 p-2 flex flex-col gap-2 h-[calc(100vh-4.25rem)] overflow-hidden">
+            <div className="flex-1 p-2 flex flex-col gap-2 min-h-0 overflow-hidden">
 
                 {/* AREA 1: INFORMATION (Top ~60%) */}
-                <div className="flex-[55] min-h-0">
+                <div className="flex-[60] min-h-0">
                     <TopPanel_TechnicalAssistance currentPoint={currentPoint} />
                 </div>
 
                 {/* AREA 2: UTILITIES (Bottom ~40%) */}
-                <div className="flex-[45] min-h-0 flex gap-2">
+                <div className="flex-[40] min-h-0 flex gap-2">
                     {/* Utility A: Vision (Left 35%) */}
                     <div className="flex-[35] min-h-0">
                         <VisionPanel_Collaborative
