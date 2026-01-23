@@ -132,11 +132,11 @@ const ExpertBotPanel = ({ currentPoint }) => {
                         <div className="mt-auto pt-4 pb-2 px-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2 text-center">Consultas Sugeridas</p>
                             <div className="flex flex-wrap gap-2 justify-center">
-                                {['¿Cuáles son los riesgos principales?', '¿Qué medida preventiva recomiendas?', '¿Cómo verifico esto visualmente?', 'Referencia Legal'].map((suggestion, idx) => (
+                                {['¿Qué debo inspeccionar visualmente?', 'Criterios Aceptación/Rechazo', 'Soluciones Técnicas'].map((suggestion, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => setInput(suggestion)}
-                                        className="text-sm bg-white border border-indigo-100 text-indigo-600 px-3 py-1.5 rounded-full hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
+                                        className="text-xs bg-white border border-indigo-100 text-indigo-600 px-3 py-1.5 rounded-full hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
                                     >
                                         {suggestion}
                                     </button>
