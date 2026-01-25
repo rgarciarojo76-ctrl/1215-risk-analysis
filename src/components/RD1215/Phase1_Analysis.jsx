@@ -82,7 +82,7 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
     const progress = ((currentPointIndex + 1) / RD1215_ANNEX.length) * 100;
 
     return (
-        <div className="flex flex-col h-screen bg-gray-50 overflow-hidden relative">
+        <div className="flex flex-col min-h-screen lg:h-screen bg-gray-50 lg:overflow-hidden relative">
 
             {/* REPORT GENERATION MODAL */}
             {reportStatus !== 'idle' && (
@@ -116,15 +116,15 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
             )}
 
             {/* Header Toolbar */}
-            <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-30 flex-none">
-                <div className="flex items-center gap-4">
+            <div className="min-h-[4rem] h-auto lg:h-16 bg-white border-b border-gray-200 flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 py-3 lg:px-6 lg:py-0 shadow-sm z-30 flex-none gap-3 lg:gap-0">
+                <div className="flex items-center gap-4 w-full lg:w-auto">
                     <button onClick={onBack} className="text-gray-500 hover:bg-gray-100 p-2 rounded-lg transition-colors">
                         <ChevronLeft className="w-5 h-5" />
                     </button>
-                    <div>
-                        <h1 className="text-lg font-bold text-gray-800">{machineData.name}</h1>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                            <span className="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded uppercase font-semibold tracking-wider">
+                    <div className="flex-1 lg:flex-none">
+                        <h1 className="text-lg font-bold text-gray-800 line-clamp-1">{machineData.name}</h1>
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mt-1 lg:mt-0">
+                            <span className="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded uppercase font-semibold tracking-wider whitespace-nowrap">
                                 {{
                                     'generic_fixed': 'Equipo Fijo Genérico',
                                     'press': 'Prensa Mecánica / Hidráulica',
@@ -133,12 +133,12 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                                     'saw': 'Sierra de Cinta'
                                 }[machineData.type] || machineData.type}
                             </span>
-                            <span>• Punto {currentPointIndex + 1} de {RD1215_ANNEX.length}</span>
+                            <span className="whitespace-nowrap">• Punto {currentPointIndex + 1} de {RD1215_ANNEX.length}</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto justify-end">
                     {/* Compliance Toggles */}
                     <div className="flex bg-gray-100 p-1 rounded-lg">
                         <button
@@ -226,18 +226,18 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                 ></div>
             </div>
 
-            {/* Main Content Grid - Optimized Density (Full Screen, No Scroll) */}
-            <div className="flex-1 p-2 flex flex-col gap-2 min-h-0 overflow-hidden">
+            {/* Main Content Grid - Responsive: Stacked on Mobile, Flex on Desktop */}
+            <div className="flex-1 p-2 flex flex-col gap-2 min-h-0 lg:overflow-hidden overflow-visible">
 
-                {/* AREA 1: INFORMATION (Top ~60%) */}
-                <div className="flex-[60] min-h-0">
+                {/* AREA 1: INFORMATION */}
+                <div className="w-full lg:flex-[60] min-h-[600px] lg:min-h-0">
                     <TopPanel_TechnicalAssistance currentPoint={currentPoint} />
                 </div>
 
-                {/* AREA 2: UTILITIES (Bottom ~40%) */}
-                <div className="flex-[40] min-h-0 flex gap-2">
-                    {/* Utility A: Vision (Left 35%) */}
-                    <div className="flex-[35] min-h-0">
+                {/* AREA 2: UTILITIES */}
+                <div className="w-full lg:flex-[40] min-h-0 flex flex-col lg:flex-row gap-2">
+                    {/* Utility A: Vision */}
+                    <div className="w-full lg:flex-[35] min-h-[500px] lg:min-h-0">
                         <VisionPanel_Collaborative
                             currentPoint={currentPoint}
                             currentPointId={currentPoint.id}
@@ -249,8 +249,8 @@ const Phase1_Analysis = ({ machineData, onBack }) => {
                         />
                     </div>
 
-                    {/* Utility B: Findings List (Right 65%) */}
-                    <div className="flex-[65] min-h-0">
+                    {/* Utility B: Findings List */}
+                    <div className="w-full lg:flex-[65] min-h-[400px] lg:min-h-0">
                         <FindingsPanel_Table
                             currentPointId={currentPoint.id}
                             findings={findings}

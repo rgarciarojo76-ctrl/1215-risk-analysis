@@ -33,7 +33,7 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
                 </>
             }
         >
-            <div className="h-full flex flex-col gap-2 overflow-hidden relative">
+            <div className="h-auto lg:h-full flex flex-col gap-2 overflow-visible lg:overflow-hidden relative">
 
                 {/* Legal Text Section */}
                 <div className="flex-none">
@@ -49,7 +49,7 @@ const TopPanel_TechnicalAssistance = ({ currentPoint }) => {
                 </div>
 
                 {/* Main Content: 3-Column Grid */}
-                <div className="flex-1 min-h-0 grid grid-cols-3 gap-4">
+                <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden lg:overflow-visible">
 
                     {/* Col 1: Expert Criteria */}
                     <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-2 min-h-0">

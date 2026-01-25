@@ -2,7 +2,7 @@ import React from 'react';
 
 const CorporateCard = ({ title, children, className = "", headerColor = "bg-white", borderColor = "border-t-4 border-t-blue-500", icon: Icon, headerActions }) => {
     return (
-        <div className={`bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col h-full overflow-hidden ${className}`}>
+        <div className={`bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col h-auto lg:h-full overflow-visible lg:overflow-hidden ${className}`}>
             {/* Header */}
             <div className={`px-4 py-2 flex items-center justify-between border-b border-gray-50 ${headerColor} ${borderColor}`}>
                 <div className="flex items-center gap-3">
@@ -13,7 +13,7 @@ const CorporateCard = ({ title, children, className = "", headerColor = "bg-whit
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-hidden relative p-4">
+            <div className="flex-1 overflow-visible lg:overflow-hidden relative p-4">
                 {children}
             </div>
         </div>
