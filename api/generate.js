@@ -1,4 +1,5 @@
-
+// CACHE-BUST: v2.0.0 — Gemini 2.0 Flash — 2026-02-16T20:47Z — REPLACES imagen-3.0-generate-001
+// If you see "imagen-3.0" errors, Vercel is serving a stale function. Redeploy required.
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const MAX_PROMPT_LENGTH = 5000;
