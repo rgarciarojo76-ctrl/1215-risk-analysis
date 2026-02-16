@@ -18,7 +18,14 @@ ${currentPoint?.check_points?.map(cp => `- ${cp.label}: ${cp.detail}`).join('\n'
 TU TAREA:
 1. Analiza la imagen buscando CUMPLIMIENTO o INCUMPLIMIENTO de estos criterios específicos.
 2. Si ves un riesgo claro relacionado con estos puntos, márcalo.
-3. Si la imagen cumple los criterios visuales (ej. colores correctos, resguardos presentes), indícalo también si es relevante, pero prioriza los RIESGOS.
+3. Genera un "dalle_prompt" en INGLÉS que describa la escena CORREGIDA con las medidas preventivas INSTALADAS.
+
+INSTRUCCIONES PARA "dalle_prompt":
+- Empieza con: "EDIT this industrial photograph to INSTALL safety measures:"
+- Usa verbos imperativos: INSTALL, ADD, PLACE, MOUNT.
+- Describe los elementos de seguridad con colores explícitos (yellow guardrail, green exit sign).
+- Describe la escena resultante, NO el proceso de cambio.
+- Máximo 500 caracteres.
 
 FORMATO DE SALIDA (ESTRICTAMENTE JSON):
 Responde ÚNICAMENTE con un objeto JSON válido:
@@ -33,7 +40,8 @@ Responde ÚNICAMENTE con un objeto JSON válido:
       "severidad": "Alta",
       "coordinates": [ymin, xmin, ymax, xmax] // Coordenadas 0-1000 del elemento en la imagen.
     }
-  ]
+  ],
+  "dalle_prompt": "EDIT this industrial photograph to INSTALL safety measures: [describe the corrected scene in English]"
 }
 `;
 
